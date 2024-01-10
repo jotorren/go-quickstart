@@ -27,14 +27,13 @@ func NewHTTPServer(cfg *config.Configuration, router *mux.Router, lc fx.Lifecycl
 	}
 
 	// CORS setup
-	corslogger := logger.Level(zerolog.InfoLevel)
 	co := cors.New(cors.Options{
 		AllowedOrigins:   cfg.Server.Origins,
 		AllowCredentials: true,
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost},
 		AllowedHeaders:   []string{"Authorization"},
 		Debug:            true,
-		Logger:           &corslogger,
+		Logger:           &logger,
 	})
 	srv := &http.Server{Addr: ":" + cfg.Server.Port, Handler: co.Handler(router)}
 
