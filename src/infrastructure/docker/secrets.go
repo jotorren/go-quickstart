@@ -25,7 +25,6 @@ func (r *Runtime) PutSecretsIntoEnv() {
 
 	err := filepath.Walk(folder, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
-			log.Error().Err(err).Send()
 			return err
 		}
 		if !f.IsDir() {

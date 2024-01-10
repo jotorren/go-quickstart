@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  myapp-server:
+    build:
+      dockerfile: Dockerfile
+      context: ../
+    restart: always
+    environment:
+      - SERVER_ALLOWED_ORIGINS=['http://localhost:3000']
+      - LOG_LEVEL_HTTP=0
+    ports:
+      - "8080:8080"
