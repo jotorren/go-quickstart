@@ -1,6 +1,6 @@
 # A very simple Golang REST API
 
-Key aspects:
+This is an opinionated *Go project template* you *can use* as a starting point for your project. The current version includes the following *key aspects*:
 
 - **Hexagonal architecture**
 
