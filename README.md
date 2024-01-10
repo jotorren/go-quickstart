@@ -63,7 +63,7 @@ $ curl -X GET http://localhost:8080/api/v1/ping
 
 
 
-```shell
+```bash
 go-quickstart$ more Dockerfile 
 FROM golang:1.21 AS build
 WORKDIR /app/
@@ -83,7 +83,7 @@ CMD ["/app/myapp"]
 
 
 
-```shell
+```bash
 go-quickstart$ cd deploy/
 
 go-quickstart/deploy$ docker-compose up -d --build myapp-server
@@ -151,7 +151,7 @@ Creating deploy_myapp-server_1 ... done
 
 
 
-```shell
+```bash
 go-quickstart/deploy$ docker ps
 CONTAINER ID   IMAGE                                 COMMAND                  CREATED              STATUS              PORTS                                                                                                                                             NAMES
 acbfea5f0839   deploy_myapp-server                   "/app/myapp"             About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp                                                                                                                            deploy_myapp-server_1
@@ -164,7 +164,7 @@ Wed, 10 Jan 2024 22:55:02 UTC INF app/src/infrastructure/transport/httpadapter.g
 
 
 
-```shell
+```bash
 go-quickstart/deploy$ docker image ls
 REPOSITORY                         TAG               IMAGE ID       CREATED         SIZE
 deploy_myapp-server                latest            9cef1edc154b   2 minutes ago   18.9MB
@@ -173,7 +173,7 @@ deploy_myapp-server                latest            9cef1edc154b   2 minutes ag
 
 
 
-```shell
+```bash
 go-quickstart/deploy$ docker container run --rm -it 4bcba143f2c7
 root@3e5f7d2f4f89:/app/src# ls
 application  cmd  domain  go.mod  go.sum  infrastructure  resources  resources.go
