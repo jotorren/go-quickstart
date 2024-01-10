@@ -34,17 +34,17 @@ $ cd go-quickstart/
 go-quickstart$ cd src
 go-quickstart/src$ make build
 ********** Building binary...
-go build -o ../myapp cmd/local/main.go
+go build -o myapp cmd/local/main.go
 
 go-quickstart/src$
-go-quickstart/src$ ls -l ../myapp
--rwxr-xr-x 1 jotorren jotorren 11433338 Jan 10 16:39 ../myapp
+go-quickstart/src$ ls -l myapp
+-rwxr-xr-x 1 jotorren jotorren 11433338 Jan 10 16:39 myapp
 ```
 
 And finally run:
 
 ```shell
-go-quickstart/src$ ../myapp
+go-quickstart/src$ ./myapp
 Wed, 10 Jan 2024 16:40:14 CET INF cmd/local/main.go:40 > application.yaml read
 Wed, 10 Jan 2024 16:40:14 CET INF infrastructure/config/configuration.go:43 > {Log:{DefaultLevel:1 PackagesLevel:map[http:0]} Server:{Port:8080 Origins:[http://localhost:3000]}}
 Wed, 10 Jan 2024 16:40:14 CET INF infrastructure/transport/httpadapter.go:46 > starting HTTP server addr=:8080

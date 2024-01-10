@@ -2,7 +2,7 @@ all: test build
 
 build:
 	@echo '**********' Building binary...
-	go build -o ../myapp cmd/local/main.go
+	go build -o myapp cmd/local/main.go
 	@echo
 
 test:
