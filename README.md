@@ -1,6 +1,6 @@
 # A very simple Golang REST API
 
-This is an opinionated *Go project template* you *can use* as a starting point for your project. The current version includes the following *key aspects*:
+This is an opinionated *Go project template* you *can use* as a starting point for your project. Current version includes the following *key aspects*:
 
 - **Hexagonal architecture**
 
@@ -10,7 +10,7 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 - **net/http** with **CORS** security
 
-- **gorilla/mux** router and URL matcher. With a **subrouter** to use specific middleware for specific routes.
+- **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes.
 
 - **rs/zerolog** logging library. **Per request contextual logging**.
 
