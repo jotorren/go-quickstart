@@ -1,4 +1,4 @@
-# A very simple REST API
+# A very simple Golang REST API
 
 Key aspects:
 
