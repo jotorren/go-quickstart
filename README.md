@@ -10,9 +10,9 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 - **net/http** with **CORS** security
 
-- **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes.
+- **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes
 
-- **rs/zerolog** logging library. **Per request contextual logging**.
+- **rs/zerolog** logging library. **Per request contextual logging**
 
 ## Build & Run
 
