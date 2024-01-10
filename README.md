@@ -10,7 +10,7 @@ Key aspects:
 
 - **net/http** with **CORS** security
 
-- **gorilla/mux** router and URL matcher. Define a **subrouter** to use specific middleware for specific routes.
+- **gorilla/mux** router and URL matcher. With a **subrouter** to use specific middleware for specific routes.
 
 - **rs/zerolog** logging library. **Per request contextual logging**.
 
