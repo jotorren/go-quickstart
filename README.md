@@ -29,7 +29,7 @@ Receiving objects: 100% (59/59), 13.93 KiB | 356.00 KiB/s, done.
 Resolving deltas: 100% (13/13), done.
 ```
 
-Compile it by means of the included `Makefile`:
+Use `make `to compile a final executable binary:
 
 ```shell
 $ cd go-quickstart/
@@ -52,7 +52,7 @@ Wed, 10 Jan 2024 16:40:14 CET INF infrastructure/config/configuration.go:43 > {L
 Wed, 10 Jan 2024 16:40:14 CET INF infrastructure/transport/httpadapter.go:46 > starting HTTP server addr=:8080
 ```
 
-Open another terminal and using `curl `try to access the relative URI `/api/v1/ping`:
+Run the `curl `command followed by the target URL `/api/v1/ping`:
 
 ```shell
 $ curl -X GET http://localhost:8080/api/v1/ping
