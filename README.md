@@ -8,9 +8,13 @@ Key aspects:
 
 - **uber-go/config** injection-friendly YAML configuration
 
-- **gorilla/mux** router and URL matcher
+- **net/http** with **CORS** security
 
-- **rs/zerolog** logging library
+- **gorilla/mux** router and URL matcher. Define a **subrouter** to use specific middleware for specific routes.
+
+- **rs/zerolog** logging library. **Per request contextual logging**.
+
+- 
 
 ## Build & Run
 
