@@ -1,11 +1,10 @@
+# Deployment descriptors
+./deploy
+
 # Dependency directories (remove the comment below to include it)
 ./src/vendor/
 
-# Sonar temporary files
 ./src/.scannerwork
-
-# dev env
 ./src/.env
-
-# local binary
-myapp
+./src/Makefile
+./src/myapp
