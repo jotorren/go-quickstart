@@ -14,8 +14,6 @@ Key aspects:
 
 - **rs/zerolog** logging library. **Per request contextual logging**.
 
-- 
-
 ## Build & Run
 
 Get the source code:
