@@ -29,7 +29,7 @@ Receiving objects: 100% (59/59), 13.93 KiB | 356.00 KiB/s, done.
 Resolving deltas: 100% (13/13), done.
 ```
 
-Compile it by means of the included Makefile:
+Compile it by means of the included `Makefile`:
 
 ```shell
 $ cd go-quickstart/
