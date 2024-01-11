@@ -21,7 +21,7 @@ services:
         KEYCLOAK_USER: admin
         KEYCLOAK_PASSWORD: Pa55w0rd
       ports:
-        - 8070:8080
+        - 8090:8080
       depends_on:
         - postgres
 
