@@ -1,11 +1,13 @@
 package main
 
 import (
+	"crypto/tls"
 	"net/http"
 	"os"
 	"time"
 
 	"tsib/quickstart/infrastructure/config"
+	"tsib/quickstart/infrastructure/security"
 	"tsib/quickstart/infrastructure/transport"
 
 	"github.com/ipfans/fxlogger"
@@ -31,6 +33,14 @@ func main() {
 			transport.NewHTTPServer,
 			transport.NewMuxRouter,
 			transport.NewRestController,
+			security.NewTokenVerifier,
+		),
+		fx.Supply(
+			&security.TokenVerifierTransport{
+				Transport: http.Transport{
+					TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				},
+			},
 		),
 		fx.WithLogger(func(rootLogger zerolog.Logger) fxevent.Logger {
 			return fxlogger.WithZerolog(rootLogger.Level(zerolog.WarnLevel))()

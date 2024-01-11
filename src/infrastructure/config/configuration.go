@@ -20,6 +20,13 @@ type Configuration struct {
 		Port    string
 		Origins []string
 	}
+
+	Security struct {
+		Oidc struct {
+			Configurl string
+			Clientid  string
+		}
+	}
 }
 
 // constructor that takes "application.yaml" file and loads it into

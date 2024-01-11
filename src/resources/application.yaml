@@ -2,6 +2,12 @@ log:
   defaultlevel: ${LOG_LEVEL:1}
   packageslevel:
     http: ${LOG_LEVEL_HTTP:1}
+
 server:
   port: ${SERVER_PORT:8080}
   origins: ${SERVER_ALLOWED_ORIGINS}
+
+security:
+  oidc:
+    configurl: ${OIDC_SERVER}
+    clientid: 'golang-cli'

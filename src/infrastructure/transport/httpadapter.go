@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"tsib/quickstart/infrastructure/config"
+	"tsib/quickstart/infrastructure/security"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -58,6 +59,7 @@ type MuxRouterParams struct {
 	fx.In
 
 	Cfg        *config.Configuration
+	Verifier   *security.TokenVerifier `optional:"true"`
 	Controller *RestController
 	Logger     zerolog.Logger
 }
@@ -72,6 +74,12 @@ func NewMuxRouter(p MuxRouterParams) *mux.Router {
 	router.Use(loggerMiddleware(p.Logger))
 
 	api := router.PathPrefix("/api/v1").Subrouter()
+	if nil != p.Verifier {
+		api.Use(security.NewOAuth2Middleware(p.Verifier))
+	} else {
+		api.Use(security.NewOAuth2AnonymousMiddleware())
+	}
+
 	api.HandleFunc("/ping", p.Controller.Ping).Methods("GET")
 
 	return router
