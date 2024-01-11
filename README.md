@@ -1,6 +1,8 @@
-# A very simple Golang REST API + OpenID Connect security
+# Secure REST API in Golang with OpenID Connect
 
-This is an opinionated *Go project template* you *can use* as a starting point for your project. Current version includes the following *key aspects*:
+This project focuses on how to secure REST APIs in Golang by using the OIDC/OAuth2 standard. 
+
+Inherited *key aspects*:
 
 > - **Hexagonal architecture**
 > 
@@ -14,17 +16,21 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 > 
 > - **rs/zerolog** logging library. **Per request contextual logging**  (all traces within the same request will share the same unique id)
 
-**<mark>New</mark>**
+**<mark>New </mark>**
 
-- **coreos/go-oidc** **OpenID Connect** token security
+- **OpenID Connect** tokens security (authentication and authorization)
 
 ## Changes
 
+### Security configuration
+
+YAML
+
 ### OIDC token verifier
 
-### HTTP middleware
 
-### Security configuration
+
+### HTTP middleware
 
 
 
