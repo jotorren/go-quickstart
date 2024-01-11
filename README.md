@@ -22,15 +22,9 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 ### OIDC token verifier
 
-
-
 ### HTTP middleware
 
-
-
 ### Security configuration
-
-
 
 
 
@@ -51,4 +45,14 @@ Thu, 11 Jan 2024 00:43:44 UTC INF app/src/infrastructure/config/configuration.go
 Thu, 11 Jan 2024 00:43:44 UTC ERR go/pkg/mod/github.com/ipfans/fxlogger@v0.2.0/zerolog.go:72 > invoke failed error="could not build arguments for function \"main\".main.func3 (/app/src/cmd/docker/main.go:51): failed to build *http.Server: could not build arguments for function \"tsib/quickstart/infrastructure/transport\".NewHTTPServer (/app/src/infrastructure/transport/httpadapter.go:24): failed to build *mux.Router: could not build arguments for function \"tsib/quickstart/infrastructure/transport\".NewMuxRouter (/app/src/infrastructure/transport/httpadapter.go:67): failed to build *security.TokenVerifier: received non-nil error from function \"tsib/quickstart/infrastructure/security\".NewTokenVerifier (/app/src/infrastructure/security/oidc.go:75): Get \"http://127.0.0.1:8090/auth/realms/evote/.well-known/openid-configuration\": dial tcp 127.0.0.1:8090: connect: connection refused" function=main.main.func3() stack="main.main\n\t/app/src/cmd/docker/main.go:44\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:267\n"
 ```
 
+## Contributors
 
+| Name               | GitHub                                  |
+| ------------------ | --------------------------------------- |
+| **Jordi Torrente** | [jotorren](https://github.com/jotorren) |
+
+I'll accept pretty much everything so feel free to open a Pull-Request
+
+## Support, Questions, or Feedback
+
+> Contact me anytime for anything about this repo
