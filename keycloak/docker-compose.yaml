@@ -1,8 +1,4 @@
 version: '3'
-
-volumes:
-  myapp_kcdb:
-    driver: local
     
 services:
   postgres:
@@ -28,3 +24,7 @@ services:
         - 8070:8080
       depends_on:
         - postgres
+
+volumes:
+  myapp_kcdb:
+    driver: local
