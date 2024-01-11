@@ -12,7 +12,7 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 - **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes
 
-- **rs/zerolog** logging library. **Per request contextual logging**
+- **rs/zerolog** logging library. **Per request contextual logging** (all traces within the same request will share the same unique id)
 
 ## Build & Run
 
