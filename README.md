@@ -292,4 +292,4 @@ RUN CGO_ENABLED=0 go build -o ../myapp cmd/docker/main.go
 
 ## Notes
 
-The source code found in the `main` branch is the baseline on which different functionalities will be added (`OIDC`, `ORM`, `observability` and so on), each of them in a specific branch ot this repository.
+The source code found in the `main` branch is the baseline on which different functionalities will be added (`OIDC`, `ORM`, `observability` and so on), each of them available in a specific branch ot this repository.
