@@ -9,7 +9,7 @@ services:
     environment:
       - SERVER_ALLOWED_ORIGINS=['http://localhost:3000']
       - LOG_LEVEL_HTTP=0
-      - OIDC_SERVER=http://127.0.0.1:8090/auth/realms/evote
+      - OIDC_SERVER=http://127.0.0.1:8090/auth/realms/mycorp
       - KEYCLOAK_CONTAINER=keycloak_keycloak_1
     ports:
       - "8080:8080"
