@@ -361,16 +361,10 @@ RUN CGO_ENABLED=0 go build -o ../myapp cmd/docker/main.go
 
 ## Notes
 
-The source code found in the `main` branch is the baseline on which different functionalities will be added (`OIDC`, `ORM`, `observability` and so on), each of them available in a specific branch ot this repository.
-
-## Contributors
-
-| Name               | GitHub                                  |
-| ------------------ | --------------------------------------- |
-| **Jordi Torrente** | [jotorren](https://github.com/jotorren) |
-
-I'll accept pretty much everything so feel free to open a Pull-Request
+The source code found in the `main` branch is the baseline on which different functionalities will be added (security, `ORM`, observability...), each of them available in a specific branch of this repository.
 
 ## Support, Questions, or Feedback
 
-> Contact me anytime for anything about this repo
+I'll accept pretty much everything so feel free to open a Pull-Request
+
+> 
