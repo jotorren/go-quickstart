@@ -394,6 +394,29 @@ As you may have noticed the http://127.0.0.1:8090/auth/realms/mycorp/.well-known
 
 Option 2 has an undesired drawback regarding to the token issuer claim (...)
 
+```shell
+curl --location 'http://localhost:8090/auth/realms/mycorp/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=golang-cli' \
+--data-urlencode 'username=jotorren' \
+--data-urlencode 'password=password' \
+--data-urlencode 'grant_type=password'
+```
+
+```log
+Fri, 12 Jan 2024 16:29:45 UTC INF app/src/cmd/docker/main.go:46 > application.yaml read
+Fri, 12 Jan 2024 16:29:45 UTC INF app/src/infrastructure/config/configuration.go:50 > {Log:{DefaultLevel:1 PackagesLevel:map[http:0]} Server:{Port:8080 Origins:[http://localhost:3000]} Security:{Oidc:{Configurl:http://127.0.0.1:8090/auth/realms/mycorp Clientid:golang-cli}}}
+Fri, 12 Jan 2024 16:29:45 UTC INF app/src/infrastructure/transport/httpadapter.go:47 > starting HTTP server addr=:8080
+Fri, 12 Jan 2024 16:29:48 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Actual request
+Fri, 12 Jan 2024 16:29:48 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual request no headers added: missing origin
+Fri, 12 Jan 2024 16:29:48 UTC DBG app/src/infrastructure/security/http.go:53 > func=http.oidc raw=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyTVdOMDJKMms0bThIT2RTdGEtaVdqRlY1dWN2UFBDTnhFcmlncnlrT0V3In0.eyJleHAiOjE3MDUwNzcyNTAsImlhdCI6MTcwNTA3Njk1MCwianRpIjoiN2E3YzFmNGItMzRhZi00MmE0LWE2NzYtMmExOTU2MTI3YzM4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJnb2xhbmctY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjM0ZWM0Nzc4LWU2YmMtNDM4Ni05ZGViLTMxOTEzNWQ5NWY3NyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbXlhcHAiXX0sInJlc291cmNlX2FjY2VzcyI6eyJnb2xhbmctY2xpIjp7InJvbGVzIjpbImFkbWluIiwicGxheWVyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiIzNGVjNDc3OC1lNmJjLTQzODYtOWRlYi0zMTkxMzVkOTVmNzciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvcmRpIFRvcnJlbnRlIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam90b3JyZW4iLCJnaXZlbl9uYW1lIjoiSm9yZGkiLCJmYW1pbHlfbmFtZSI6IlRvcnJlbnRlIiwiZW1haWwiOiJqb3RvcnJlbkBtYWlsLmNvbSJ9.kzhcYLGQHOgB46-kcJfxLj9JGfIZT7a3EBkib08S7vvJ-bn1VTgfpAWkV_RS6Q7HAFj24iJpIHCPzEc3Q32iINAia1ohOIuBlzcev5TRnB692IL8K3kEZoVuA29zFZNWRrgqZ8aIbRssYoliNQCwoS_OA0QbDHAMdFs3-XFRmlvHUqOzgOn8-NK2ZjNxtUSe_pbEyW7pJYGQEuP4dUfbsccMLrywVAMy5gmQ0saEvy9Huf5zrLTKnBin-qjhHChOemg43eKVQZWCfCXg-yGErq_gbg7ZZ3rnunpS4_fVfqDEhcvXJ5TMs_knsnz6nmC8Akw0XyUOayJXaVf-KWrdmw request_id=fca455f9-0b73-4653-a04a-8b38621e79fd
+Fri, 12 Jan 2024 16:29:48 UTC ERR app/src/infrastructure/security/http.go:57 > token not valid error="oidc: id token issued by a different provider, expected \"http://keycloak_keycloak_1:8080/auth/realms/mycorp\" got \"http://localhost:8090/auth/realms/mycorp\"" func=http.oidc request_id=fca455f9-0b73-4653-a04a-8b38621e79fd
+Fri, 12 Jan 2024 16:29:48 UTC ERR app/src/infrastructure/transport/httpadapter.go:136 > func=http.loggerMiddleware method=GET request_id=fca455f9-0b73-4653-a04a-8b38621e79fd status_code=401 total_elapsed_ms=0.402473 url=/api/v1/ping user_agent=PostmanRuntime/7.36.0
+```
+
+> [!CAUTION]
+> `oidc: id token issued by a different provider, expected "http://keycloak_keycloak_1:8080/auth/realms/mycorp" got "http://localhost:8090/auth/realms/mycorp"`
+
 This is the reason why the third alternative has been chosen and the following patches applied:
 
 > `src/Dockerfile`
