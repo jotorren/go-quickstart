@@ -19,51 +19,46 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 - **uber-go/fx** dependency injection framework
   
-  ```shell
-  go-quickstart$ more src/cmd/docker/main.go
-  ```
-  
-  ```go
-  ...
-  fx.New(
-          fx.Provide(
-                  NewRootLogger,
-                  config.NewConfiguration,
-                  transport.NewHTTPServer,
-                  transport.NewMuxRouter,
-                  transport.NewRestController,
-          ),
-          fx.WithLogger(func(rootLogger zerolog.Logger) fxevent.Logger {
-                  return fxlogger.WithZerolog(rootLogger.Level(zerolog.WarnLevel))()
-          }),
-          fx.Invoke(
-                  func(cfg *config.Configuration, rootLogger zerolog.Logger) {
-                          rootLogger.Info().Msg("application.yaml read")
-                          cfg.Print(rootLogger)
-                  },
-                  func(*http.Server) {
-                          // start server
-                  },
-          ),
-  ).Run()
-  ...
-  ```
+  > `src/cmd/docker/main.go`
+  >
+  > ```go
+  > ...
+  > fx.New(
+  >         fx.Provide(
+  >                 NewRootLogger,
+  >                 config.NewConfiguration,
+  >                 transport.NewHTTPServer,
+  >                 transport.NewMuxRouter,
+  >                 transport.NewRestController,
+  >         ),
+  >         fx.WithLogger(func(rootLogger zerolog.Logger) fxevent.Logger {
+  >                 return fxlogger.WithZerolog(rootLogger.Level(zerolog.WarnLevel))()
+  >         }),
+  >         fx.Invoke(
+  >                 func(cfg *config.Configuration, rootLogger zerolog.Logger) {
+  >                         rootLogger.Info().Msg("application.yaml read")
+  >                         cfg.Print(rootLogger)
+  >                 },
+  >                 func(*http.Server) {
+  >                         // start server
+  >                 },
+  >         ),
+  > ).Run()
+  > ...
+  > ```
 
 - **uber-go/config** injection-friendly YAML configuration
   
-  ```shell
-  go-quickstart$ more src/resources/application.yaml
-  ```
-  
-  ```yaml
-  log:
-    defaultlevel: ${LOG_LEVEL:1}
-    packageslevel:
-      http: ${LOG_LEVEL_HTTP:1}
-  server:
-    port: ${SERVER_PORT:8080}
-    origins: ${SERVER_ALLOWED_ORIGINS}
-  ```
+  > `src/resources/application.yaml`
+  > ```yaml
+  > log:
+  >   defaultlevel: ${LOG_LEVEL:1}
+  >   packageslevel:
+  >     http: ${LOG_LEVEL_HTTP:1}
+  > server:
+  >   port: ${SERVER_PORT:8080}
+  >   origins: ${SERVER_ALLOWED_ORIGINS}
+  > ```
   
   Expands any environment variable references using the `os.LookupEnv` function. All characters between the opening curly brace and the first colon are used as the key, and all characters from the colon to the closing curly brace are used as the default value. If a variable isn't found, the default value is used.
   
@@ -71,105 +66,90 @@ This is an opinionated *Go project template* you *can use* as a starting poi
   
   YAML  configuration files are embedded into the application binary at compile-time:
   
-  ```shell
-  go-quickstart$ more src/resources.go
-  ```
-  
-  ```go
-  package src
-  
-  import _ "embed"
-  
-  //go:embed resources/application.yaml
-  var ApplicationYaml []byte
-  ```
+  > `src/resources.go`
+  > ```go
+  > package src
+  > 
+  > import _ "embed"
+  > 
+  > //go:embed resources/application.yaml
+  > var ApplicationYaml []byte
+  > ```
 
 - **net/http** with **CORS** security
   
-  ```shell
-  go-quickstart$ more src/infrastructure/transport/httpadapter.go
-  ```
-  
-  ```go
-  func NewHTTPServer(cfg *config.Configuration, router *mux.Router, lc fx.Lifecycle, logger zerolog.Logger) *http.Server {
-      ml, ok := cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
-      if ok {
-              logger = logger.Level(zerolog.Level(ml))
-      }
-  
-      // CORS setup
-      co := cors.New(cors.Options{
-              AllowedOrigins:   cfg.Server.Origins,
-              AllowCredentials: true,
-              AllowedMethods:   []string{http.MethodGet, http.MethodPost},
-              AllowedHeaders:   []string{"Authorization"},
-              Debug:            true,
-              Logger:           &logger,
-      })
-      srv := &http.Server{Addr: ":" + cfg.Server.Port, Handler: co.Handler(router)}
-      ...
-  }
-  ```
+  > `src/infrastructure/transport/httpadapter.go`
+  > ```go
+  > func NewHTTPServer(cfg *config.Configuration, router *mux.Router, lc fx.Lifecycle, logger zerolog.Logger) *http.Server {
+  >     ml, ok := cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
+  >     if ok {
+  >             logger = logger.Level(zerolog.Level(ml))
+  >     }
+  > 
+  >     // CORS setup
+  >     co := cors.New(cors.Options{
+  >             AllowedOrigins:   cfg.Server.Origins,
+  >             AllowCredentials: true,
+  >             AllowedMethods:   []string{http.MethodGet, http.MethodPost},
+  >             AllowedHeaders:   []string{"Authorization"},
+  >             Debug:            true,
+  >             Logger:           &logger,
+  >     })
+  >     srv := &http.Server{Addr: ":" + cfg.Server.Port, Handler: co.Handler(router)}
+  >     ...
+  > }
+  > ```
 
 - **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes
   
-  ```shell
-  go-quickstart$ more src/infrastructure/transport/httpadapter.go
-  ```
-  
-  ```go
-  func NewMuxRouter(p MuxRouterParams) *mux.Router {
-      ml, ok := p.Cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
-      if ok {
-              p.Logger = p.Logger.Level(zerolog.Level(ml))
-      }
-  
-      router := mux.NewRouter()
-      router.Use(loggerMiddleware(p.Logger))
-  
-      api := router.PathPrefix("/api/v1").Subrouter()
-      api.HandleFunc("/ping", p.Controller.Ping).Methods("GET")
-  
-      return router
-  }
-  ```
+  > `src/infrastructure/transport/httpadapter.go`
+  > ```go
+  > func NewMuxRouter(p MuxRouterParams) *mux.Router {
+  >     ml, ok := p.Cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
+  >     if ok {
+  >             p.Logger = p.Logger.Level(zerolog.Level(ml))
+  >     }
+  > 
+  >     router := mux.NewRouter()
+  >     router.Use(loggerMiddleware(p.Logger))
+  > 
+  >     api := router.PathPrefix("/api/v1").Subrouter()
+  >     api.HandleFunc("/ping", p.Controller.Ping).Methods("GET")
+  > 
+  >     return router
+  > }
+  > ```
 
 - **rs/zerolog** logging library. **Per request contextual logging** (all traces within the same request will share the same unique id)
   
-  ```shell
-  go-quickstart$ more src/infrastructure/transport/httpadapter.go
-  ```
-  
-  ```go
-  func loggerMiddleware(logger zerolog.Logger) mux.MiddlewareFunc {
-      return func(next http.Handler) http.Handler {
-          return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-              ...
-              reqlogger := logger.With().
-                      Str("request_id", uuid.New().String()).
-                      Logger()
-              ...
-              ctx := reqlogger.WithContext(r.Context())
-              next.ServeHTTP(lrw, r.WithContext(ctx))
-          })
-      }
-  }
-  ```
+  > `src/infrastructure/transport/httpadapter.go`
+  > ```go
+  > func loggerMiddleware(logger zerolog.Logger) mux.MiddlewareFunc {
+  >     return func(next http.Handler) http.Handler {
+  >         return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+  >             ...
+  >             reqlogger := logger.With().
+  >                     Str("request_id", uuid.New().String()).
+  >                     Logger()
+  >             ...
+  >             ctx := reqlogger.WithContext(r.Context())
+  >             next.ServeHTTP(lrw, r.WithContext(ctx))
+  >         })
+  >     }
+  > }
+  > ```
 
   To use the request logger inside a controller:
 
-  ```shell
-  go-quickstart$ more src/infrastructure/transport/restcontroller.go
-  ```
-
-  ```go
-  func (c *RestController) Ping(w http.ResponseWriter, r *http.Request) {
-      logger := zerolog.Ctx(r.Context()).With().Str("func", REST_SERVICE_PING).Logger()
-
-      logger.Info().Msg("request ends with no error")
-      ...
-  }
-  ```
+  > `src/infrastructure/transport/restcontroller.go`
+  > ```go
+  > func (c *RestController) Ping(w http.ResponseWriter, r *http.Request) {
+  >     logger := zerolog.Ctx(r.Context()).With().Str("func", REST_SERVICE_PING).Logger()
+  > 
+  >     logger.Info().Msg("request ends with no error")
+  >     ...
+  > }
+  > ```
 
 ## Build & Run
 
