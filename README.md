@@ -307,7 +307,7 @@ ca77b8562e35   postgres                           "docker-entrypoint.s…"   4 s
 Keycloak console UI will be accessible at http://localhost:8090/auth/ 
 
 Once logged-in:
-1. Create realm with `name` = `myapp` (and default values)
+1. Create realm with `name` = `mycorp` (and default values)
 2. Create client with `name` = `golang-cli` (and default values)
 3. Create client roles (tab `Roles` - `Create role`): admin, player
 4. Create a user filling `username`, `email`, `email verified` (true), `first name` and `last name` 
