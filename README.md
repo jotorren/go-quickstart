@@ -42,7 +42,34 @@ Edit `src/resources/application.yaml` to add the following lines:
 Where:
 - **security.oidc.configurl** is the token issuer realm URL and,
 - **security.oidc.clientid** is the public identifier for the application
-  
+
+Additionally we must define the environment variable `${OIDC_SERVER}`:
+
+> `src/.env`
+> ```diff
+> SERVER_ALLOWED_ORIGINS="['http://localhost:3000']"
+> LOG_LEVEL_HTTP=0
+>+ OIDC_SERVER="http://127.0.0.1:8090/auth/realms/mycorp"
+> ```
+
+> `deploy/docker-compose.yaml`
+> ```diff
+> version: "3.3"
+> 
+> services:
+>   myapp-server:
+>     build:
+>       dockerfile: Dockerfile
+>       context: ../
+>     restart: always
+>     environment:
+>       - SERVER_ALLOWED_ORIGINS=['http://localhost:3000']
+>       - LOG_LEVEL_HTTP=0
+>+       - OIDC_SERVER=http://127.0.0.1:8090/auth/realms/mycorp
+>     ports:
+>       - "8080:8080"
+> ```
+
 ### OIDC token verifier
 Token validation algorithm implementation
 
