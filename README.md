@@ -49,7 +49,7 @@ keycloak
 
 
 > [!CAUTION]
-> `Get \"http://127.0.0.1:8090/auth/realms/evote/.well-known/openid-configuration\": dial tcp 127.0.0.1:8090: connect: connection refused"`
+> `Get "http://127.0.0.1:8090/auth/realms/evote/.well-known/openid-configuration": dial tcp 127.0.0.1:8090: connect: connection refused"`
 >
 
 
