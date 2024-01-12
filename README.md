@@ -344,7 +344,6 @@ curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openi
 
 If you compile the source code shown so far and run the executable binary from the command line, everything should work as expected. But, if you run the application inside a docker container, you will most likely receive the following error:
 
-> `quickstart/deploy$ docker logs 1a653e537687`
 > ```log
 > Thu, 11 Jan 2024 00:43:44 UTC INF app/src/cmd/docker/main.go:46 > application.yaml read
 > Thu, 11 Jan 2024 00:43:44 UTC INF app/src/infrastructure/config/configuration.go:50 > {Log:{DefaultLevel:1 PackagesLevel:map[http:0]} Server:{Port:8080 Origins:[http://localhost:3000]} Security:{Oidc:{Configurl:http://127.0.0.1:8090/auth/realms/mycorp Clientid:golang-cli}}}
@@ -361,7 +360,8 @@ More concretely:
 > `Get "http://127.0.0.1:8090/auth/realms/mycorp/.well-known/openid-configuration": dial tcp 127.0.0.1:8090: connect: connection refused"`
 >
 
-
+The `http://127.0.0.1:8090/auth/realms/mycorp/.well-known/openid-configuration` URL is available on the host machine but not inside a docker container. To solve the problem we can:
+- attach keycloak and application containers to the same docker network and set the docker environment variable OIDC_SERVER to `http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp`
 
 ## Support, Questions, or Feedback
 
