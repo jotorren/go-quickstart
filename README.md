@@ -1,9 +1,10 @@
 # Secure REST API in Golang with OpenID Connect
 
-This project focuses on how to secure REST APIs in Golang by using the OIDC/OAuth2 standard. 
-
-Inherited *key aspects* from baseline code:
-
+This project focuses on how to secure (authentication and authorization) REST APIs in Golang by using the OIDC/OAuth2 standard. 
+      
+> [!NOTE]
+> Inherited *key aspects* from baseline code:
+>
 > - **Hexagonal architecture**
 > 
 > - **uber-go/fx** dependency injection framework
@@ -15,10 +16,6 @@ Inherited *key aspects* from baseline code:
 > - **gorilla/mux** router and a **subrouter** to use specific middleware for specific routes
 > 
 > - **rs/zerolog** logging library. **Per request contextual logging**  (all traces within the same request will share the same unique id)
-
-**<mark>New </mark>**
-
-- **OpenID Connect** tokens security (authentication and authorization)
 
 ## Changes
 
