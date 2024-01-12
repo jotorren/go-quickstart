@@ -55,8 +55,77 @@ Wed, 10 Jan 2024 16:40:14 CET INF infrastructure/transport/httpadapter.go:46 > s
 Run the `curl `command followed by the target URL `/api/v1/ping`:
 
 ```shell
-$ curl -X GET http://localhost:8080/api/v1/ping
+$ curl http://localhost:8080/api/v1/ping
 {"result":"ping"} 
+```
+
+To test **CORS** configuration:
+
+1. **Sending a regular request**. If the origin is allowed, the response will include the `Access-Control-Allow-Origin` header. Otherwise, that header will not appear.
+
+```shell
+$ curl -H "Origin: http://localhost:3000" --head -X GET http://localhost:8080/api/v1/ping
+HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: http://localhost:3000
+Content-Type: application/json
+Vary: Origin
+Date: Fri, 12 Jan 2024 02:04:29 GMT
+Content-Length: 18
+```
+
+Adding `--head` outputs only headers. Looking at the service log:
+
+```log
+Fri, 12 Jan 2024 02:04:29 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Actual request
+Fri, 12 Jan 2024 02:04:29 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin]]
+Fri, 12 Jan 2024 02:04:29 UTC INF app/src/infrastructure/transport/restcontroller.go:46 > request ends with no error func=http.RestController.Ping request_id=9f41f2b6-13af-413b-b29f-e9d96f8364e4
+Fri, 12 Jan 2024 02:04:29 UTC DBG app/src/infrastructure/transport/httpadapter.go:119 > func=http.loggerMiddleware method=GET request_id=9f41f2b6-13af-413b-b29f-e9d96f8364e4 status_code=200 total_elapsed_ms=0.075355 url=/api/v1/ping user_agent=curl/7.74.0
+```
+
+```shell
+$ curl -H "Origin: http://some.other" --head -X GET http://localhost:8080/api/v1/ping
+HTTP/1.1 200 OK
+Content-Type: application/json
+Vary: Origin
+Date: Fri, 12 Jan 2024 02:05:20 GMT
+Content-Length: 18
+```
+
+```log
+Fri, 12 Jan 2024 02:05:20 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Actual request
+Fri, 12 Jan 2024 02:05:20 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual request no headers added: origin 'http://some.other' not allowed
+Fri, 12 Jan 2024 02:05:20 UTC INF app/src/infrastructure/transport/restcontroller.go:46 > request ends with no error func=http.RestController.Ping request_id=77f1fe29-410d-45bb-91f2-2f5b54f0a8a2
+Fri, 12 Jan 2024 02:05:20 UTC DBG app/src/infrastructure/transport/httpadapter.go:119 > func=http.loggerMiddleware method=GET request_id=77f1fe29-410d-45bb-91f2-2f5b54f0a8a2 status_code=200 total_elapsed_ms=0.100864 url=/api/v1/ping user_agent=curl/7.74.0
+```
+
+2. **Sending a preflight request**. If the preflight request is successful, the response should include the `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, and `Access-Control-Allow-Headers` headers. If the preflight request was not successful, these headers shouldn't appear.
+
+```shell
+$ curl -H "Origin: http://localhost:3000" -H "Access-Control-Request-Method: GET" -X OPTIONS --head http://localhost:8080/api/v1/ping
+HTTP/1.1 204 No Content
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Origin: http://localhost:3000
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Date: Fri, 12 Jan 2024 01:59:51 GMT
+```
+
+```log
+Fri, 12 Jan 2024 01:59:51 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
+Fri, 12 Jan 2024 01:59:51 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight response headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Methods:[GET] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin, Access-Control-Request-Method, Access-Control-Request-Headers]]
+```
+
+```shell
+$ curl -H "Origin: http://some.other" -H "Access-Control-Request-Method: GET" -X OPTIONS --head http://localhost:8080/api/v1/ping
+HTTP/1.1 204 No Content
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Date: Fri, 12 Jan 2024 01:59:37 GMT
+```
+
+```log
+Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
+Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight aborted: origin 'http://some.other' not allowed
 ```
 
 ### Docker multistage build
@@ -262,7 +331,7 @@ Wed, 10 Jan 2024 22:55:02 UTC INF app/src/cmd/docker/main.go:36 > application.ya
 Wed, 10 Jan 2024 22:55:02 UTC INF app/src/infrastructure/config/configuration.go:43 > {Log:{DefaultLevel:1 PackagesLevel:map[http:0]} Server:{Port:8080 Origins:[http://localhost:3000]}}
 Wed, 10 Jan 2024 22:55:02 UTC INF app/src/infrastructure/transport/httpadapter.go:46 > starting HTTP server addr=:8080
 
-go-quickstart$ curl -X GET http://localhost:8080/api/v1/ping
+go-quickstart$ curl http://localhost:8080/api/v1/ping
 {"result":"ping"}
 ```
 
