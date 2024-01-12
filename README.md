@@ -1,6 +1,6 @@
 # Secure REST API in Golang with OpenID Connect
 
-This project focuses on how to secure (by supporting authentication and authorization flows) REST APIs in Golang by using the OIDC/OAuth2 standard. 
+This project focuses on how to secure (adding support for authentication and authorization flows) REST APIs in Golang by using the OIDC/OAuth2 standard. 
       
 > [!NOTE]
 > Inherited *key aspects* from baseline code:
