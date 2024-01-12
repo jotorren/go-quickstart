@@ -218,9 +218,9 @@ Content-Length: 18
 
 Adding `--head` outputs only headers. Looking at the service log:
 
-```log
+```diff
 Fri, 12 Jan 2024 02:04:29 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Actual request
-Fri, 12 Jan 2024 02:04:29 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin]]
++ Fri, 12 Jan 2024 02:04:29 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin]]
 Fri, 12 Jan 2024 02:04:29 UTC INF app/src/infrastructure/transport/restcontroller.go:46 > request ends with no error func=http.RestController.Ping request_id=9f41f2b6-13af-413b-b29f-e9d96f8364e4
 Fri, 12 Jan 2024 02:04:29 UTC DBG app/src/infrastructure/transport/httpadapter.go:119 > func=http.loggerMiddleware method=GET request_id=9f41f2b6-13af-413b-b29f-e9d96f8364e4 status_code=200 total_elapsed_ms=0.075355 url=/api/v1/ping user_agent=curl/7.74.0
 ```
@@ -234,15 +234,11 @@ Date: Fri, 12 Jan 2024 02:05:20 GMT
 Content-Length: 18
 ```
 
-```log
+```diff
 Fri, 12 Jan 2024 02:05:20 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Actual request
-Fri, 12 Jan 2024 02:05:20 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual request no headers added: origin 'http://some.other' not allowed
+- Fri, 12 Jan 2024 02:05:20 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Actual request no headers added: origin 'http://some.other' not allowed
 Fri, 12 Jan 2024 02:05:20 UTC INF app/src/infrastructure/transport/restcontroller.go:46 > request ends with no error func=http.RestController.Ping request_id=77f1fe29-410d-45bb-91f2-2f5b54f0a8a2
 Fri, 12 Jan 2024 02:05:20 UTC DBG app/src/infrastructure/transport/httpadapter.go:119 > func=http.loggerMiddleware method=GET request_id=77f1fe29-410d-45bb-91f2-2f5b54f0a8a2 status_code=200 total_elapsed_ms=0.100864 url=/api/v1/ping user_agent=curl/7.74.0
-```
-
-```diff
-Actual request no headers added: origin '[http://some.other'](http://some.other') not allowed
 ```
 
 2. **Sending a preflight request**. If the preflight request is successful, the response should include the `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, and `Access-Control-Allow-Headers` headers. Otherwise, these headers shouldn't appear.
@@ -257,9 +253,9 @@ Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
 Date: Fri, 12 Jan 2024 01:59:51 GMT
 ```
 
-```log
+```diff
 Fri, 12 Jan 2024 01:59:51 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
-Fri, 12 Jan 2024 01:59:51 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight response headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Methods:[GET] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin, Access-Control-Request-Method, Access-Control-Request-Headers]]
++ Fri, 12 Jan 2024 01:59:51 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight response headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Methods:[GET] Access-Control-Allow-Origin:[http://localhost:3000] Vary:[Origin, Access-Control-Request-Method, Access-Control-Request-Headers]]
 ```
 
 ```shell
@@ -269,13 +265,9 @@ Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
 Date: Fri, 12 Jan 2024 01:59:37 GMT
 ```
 
-```log
-Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
-Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight aborted: origin 'http://some.other' not allowed
-```
-
 ```diff
-Preflight aborted: origin '[http://some.other'](http://some.other') not allowed
+Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
+- Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight aborted: origin 'http://some.other' not allowed
 ```
 
 ### Docker multistage build
