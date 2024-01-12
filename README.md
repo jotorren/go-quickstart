@@ -1,6 +1,6 @@
 # Secure REST API in Golang with OpenID Connect
 
-This project focuses on how to secure (adding support for authentication and authorization flows) REST APIs in Golang by using the OIDC/OAuth2 standard. 
+This project focuses on how to secure REST APIs in Golang using the OIDC/OAuth2 standard assuming an Identity Provider (IDP) is already available.
       
 > [!NOTE]
 > Inherited *key aspects* from baseline code:
@@ -21,8 +21,28 @@ This project focuses on how to secure (adding support for authentication and aut
 
 ### Security configuration
 
-YAML
+Edit `src/resources/application.yaml` to add the following lines:
 
+>```diff
+> log:
+>   defaultlevel: ${LOG_LEVEL:1}
+>   packageslevel:
+>     http: ${LOG_LEVEL_HTTP:1}
+> 
+> server:
+>   port: ${SERVER_PORT:8080}
+>   origins: ${SERVER_ALLOWED_ORIGINS}
+> 
+>+ security:
+>+   oidc:
+>+     configurl: ${OIDC_SERVER}
+>+     clientid: 'golang-cli'
+>```
+
+Where:
+- **security.oidc.configurl** is the token issuer realm URL and,
+- **security.oidc.clientid** is the public identifier for the application
+  
 ### OIDC token verifier
 
 ### HTTP middleware
