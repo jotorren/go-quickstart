@@ -308,7 +308,7 @@ Keycloak console UI will be accessible at http://localhost:8090/auth/
 
 Once logged-in:
 1. Create realm with `name` = `mycorp` (and default values)
-2. Create client with `name` = `golang-cli` (and default values)
+2. Create public client with `name` = `golang-cli` (and default values)
 3. Create client roles (tab `Roles` - `Create role`): admin, player
 4. Create a user filling `username`, `email`, `email verified (true)`, `first name`, `last name` 
 5. Set user credentials password (`temporary off`)
