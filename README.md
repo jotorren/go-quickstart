@@ -255,7 +255,64 @@ Add the verifier dependency to `src/infrastructure/transport/httpadapter.go`:
 
 ## Identity and access management
 
-keycloak
+The `keycloak/docker-compose.yaml` file contains:
+> ```yaml
+> version: '3'
+>     
+> services:
+>   postgres:
+>       image: postgres
+>       volumes:
+>         - myapp_kcdb:/var/lib/postgresql/data
+>       environment:
+>         POSTGRES_DB: keycloak
+>         POSTGRES_USER: keycloak
+>         POSTGRES_PASSWORD: r0CaToLive
+>   keycloak:
+>       image: quay.io/keycloak/keycloak:legacy
+>       environment:
+>         DB_VENDOR: POSTGRES
+>         DB_ADDR: postgres
+>         DB_DATABASE: keycloak
+>         DB_USER: keycloak
+>         DB_SCHEMA: public
+>         DB_PASSWORD: r0CaToLive
+>         KEYCLOAK_USER: admin
+>         KEYCLOAK_PASSWORD: Pa55w0rd
+>       ports:
+>         - 8090:8080
+>       depends_on:
+>         - postgres
+> 
+> volumes:
+>   myapp_kcdb:
+>     driver: local
+> ```
+
+To start a **keycloak** local instance with a **postgres** database run the following command:
+```bash
+go-quickstart$ cd keycloak/
+go-quickstart/keycloak$ docker-compose up -d
+Creating network "keycloak_default" with the default driver
+Creating volume "keycloak_myapp_kcdb" with local driver
+Creating keycloak_postgres_1 ... done
+Creating keycloak_keycloak_1 ... done
+
+go-quickstart/keycloak$ docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED         STATUS         PORTS                              NAMES
+c02b7ef9a48e   quay.io/keycloak/keycloak:legacy   "/opt/jboss/tools/do…"   3 seconds ago   Up 2 seconds   8443/tcp, 0.0.0.0:8090->8080/tcp   keycloak_keycloak_1
+ca77b8562e35   postgres                           "docker-entrypoint.s…"   4 seconds ago   Up 2 seconds   5432/tcp                           keycloak_postgres_1
+```
+
+Keycloak console UI will be accessible at http://localhost:8090/auth/ 
+
+Once logged-in:
+1. Create realm with `name` = `myapp` (and default values)
+2. Create client with `name` = `golang-cli` (and default values)
+3. Create client roles (tab `Roles` - `Create role`): admin, player
+4. Create a user filling `username`, `email`, `email verified` (true), `first name` and `last name` 
+5. Set credentials password (`temporary` off)
+6. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
 
 ## Troubleshooting
 
