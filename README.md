@@ -123,7 +123,135 @@ The current implementation only supports tokens that comply with:
 > }
 > ```
 
+Finally you must register the verifier constructor function in **fx**. To do so add these lines to the file `src/cmd/docker/main.go`:
+
+> ```diff
+> func main() {
+> 	fx.New(
+> 		fx.Provide(
+> 			NewRootLogger,
+> 			config.NewConfiguration,
+> 			transport.NewHTTPServer,
+> 			transport.NewMuxRouter,
+> 			transport.NewRestController,
+>+ 			security.NewTokenVerifier,
+> 		),
+> 		fx.WithLogger(func(rootLogger zerolog.Logger) fxevent.Logger {
+> 			return fxlogger.WithZerolog(rootLogger.Level(zerolog.WarnLevel))()
+> 		}),
+>+ 		fx.Supply(
+>+ 			&security.TokenVerifierTransport{
+>+ 				Transport: http.Transport{
+>+ 					TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+>+ 				},
+>+ 			},
+>+ 		),
+> 		fx.Invoke(
+> 			func(cfg *config.Configuration, rootLogger zerolog.Logger) {
+> 				rootLogger.Info().Msg("application.yaml read")
+> 				cfg.Print(rootLogger)
+> 			},
+> 			func(*http.Server) {
+> 				// start server
+> 			},
+> 		),
+> 	).Run()
+> }
+> ```
+
+> [!IMPORTANT]
+> The second green block (fx.Supply...) is only required when accessing the IDP using the http protocol instead of https
+
 ### HTTP middleware
+
+New convenience methods to easily validate http requests
+
+> `src/infrastructure/security/http.go`
+> ```go
+> func NewOAuth2Middleware(verifier *TokenVerifier) mux.MiddlewareFunc {
+> 	return func(next http.Handler) http.Handler {
+> 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+> 			logger := zerolog.Ctx(r.Context()).With().Str("func", OIDC_HTTP_MIDDLEWARE_NAME).Logger()
+> 
+> 			auth := strings.TrimSpace(r.Header.Get(headers.Authorization))
+> 			if auth == "" {
+> 				logger.Error().Msg(MSG_OIDC_TOKEN_NOT_PRESENT)
+> 				authorizationFailed(MSG_OIDC_TOKEN_NOT_PRESENT, http.StatusUnauthorized, w, r)
+> 				return
+> 			}
+> 			if len(auth) < 7 {
+> 				logger.Error().Msg(MSG_OIDC_TOKEN_NOT_PRESENT)
+> 				authorizationFailed(MSG_OIDC_TOKEN_NOT_PRESENT, http.StatusUnauthorized, w, r)
+> 				return
+> 			}
+> 			auth = auth[len(ACCESS_TOKEN_TYPE+" "):]
+> 			logger.Debug().Str("raw", auth).Send()
+> 
+> 			token, err := verifier.Parse(auth)
+> 			if err != nil {
+> 				logger.Error().Err(err).Msg(MSG_OIDC_TOKEN_PARSE)
+> 				authorizationFailed(MSG_OIDC_TOKEN_PARSE, http.StatusUnauthorized, w, r)
+> 				return
+> 			}
+> 			logger.Debug().Any("token", token).Send()
+> 
+> 			ctx := context.WithValue(r.Context(), CONTEXT_PRINCIPAL_KEY, token.PreferredUsername)
+> 			ctx = context.WithValue(ctx, CONTEXT_ROLES_KEY, token.ResourceAccess.GolangCli.Roles)
+> 
+> 			next.ServeHTTP(w, r.WithContext(ctx))
+> 		})
+> 	}
+> }
+> 
+> func NewOAuth2AnonymousMiddleware() mux.MiddlewareFunc {
+> 	return func(next http.Handler) http.Handler {
+> 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+> 
+> 			ctx := context.WithValue(r.Context(), CONTEXT_PRINCIPAL_KEY, OIDC_NOSECURITY_USER)
+> 			ctx = context.WithValue(ctx, CONTEXT_ROLES_KEY, []string{})
+> 
+> 			next.ServeHTTP(w, r.WithContext(ctx))
+> 		})
+> 	}
+> }
+> ```
+
+Add the verifier dependency to `src/infrastructure/transport/httpadapter.go`:
+> ```diff
+> type MuxRouterParams struct {
+> 	fx.In
+> 
+> 	Cfg        *config.Configuration
+>+ 	Verifier   *security.TokenVerifier `optional:"true"`
+> 	Controller *RestController
+> 	Logger     zerolog.Logger
+> }
+> 
+> func NewMuxRouter(p MuxRouterParams) *mux.Router {
+> 	ml, ok := p.Cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
+> 	if ok {
+> 		p.Logger = p.Logger.Level(zerolog.Level(ml))
+> 	}
+> 
+> 	router := mux.NewRouter()
+> 	router.Use(loggerMiddleware(p.Logger))
+> 
+> 	api := router.PathPrefix("/api/v1").Subrouter()
+>+ 	if nil != p.Verifier {
+>+ 		api.Use(security.NewOAuth2Middleware(p.Verifier))
+>+ 	} else {
+>+ 		api.Use(security.NewOAuth2AnonymousMiddleware())
+>+ 	}
+> 
+> 	api.HandleFunc("/ping", p.Controller.Ping).Methods("GET")
+> 
+> 	return router
+> }
+> ```
+
+> [!NOTE]
+> The verifier is instantiated directly without using **fx**, because it is an optional object and its required properties will not always be included in the application configuration.
+> Note that security is only applied at the mux sub-router level, leaving the main router intact.
 
 ## Identity and access management
 
