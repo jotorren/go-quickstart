@@ -392,6 +392,64 @@ As you may have noticed the http://127.0.0.1:8090/auth/realms/mycorp/.well-known
 2. Attach keycloak and application containers to the same docker network and set the docker environment variable *OIDC_SERVER* to **http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp**
 3. Attach keycloak and application containers to the same docker network and forward application's 8090 port to keycloak's 8080 (this can be easily achieved by means of the **socat** tool)
 
+Option 2 has an undesired drawback regarding to the token issuer claim (...)
+
+This is the reason why the third alternative has been chosen and the following patches applied:
+
+> `src/Dockerfile`
+> ```diff
+> FROM golang:1.21 AS build
+> WORKDIR /app/
+> COPY ./src/ ./src/
+> WORKDIR /app/src/
+> RUN go env -w GOPROXY=direct
+> RUN CGO_ENABLED=0 go build -o ../myapp cmd/docker/main.go
+> 
+> FROM alpine:3.18 AS runtime
+>+ RUN apk update && apk --no-cache add socat
+> RUN addgroup -S nonroot \
+>     && adduser -S nonroot -G nonroot
+> COPY --from=build /app/myapp  /app/myapp
+>+ COPY startup.sh /app/startup.sh
+> USER nonroot
+>- CMD ["/app/myapp"]
+>+ CMD ["/bin/sh","-c","/app/startup.sh"]
+> ```
+
+> `src/startup.sh`
+> ```diff
+>+ #! /bin/sh -x
+>+ 
+>+ /usr/bin/socat TCP-LISTEN:8090,fork,bind=127.0.0.1 TCP:${KEYCLOAK_CONTAINER}:8080 &
+>+ 
+>+ /app/myapp
+> ```
+
+> `deploy/docker-compose.yaml`
+> ```diff
+> version: "3.3"
+> 
+> services:
+>   myapp-server:
+>     build:
+>       dockerfile: Dockerfile
+>       context: ../
+>     restart: always
+>     environment:
+>       - SERVER_ALLOWED_ORIGINS=['http://localhost:3000']
+>       - LOG_LEVEL_HTTP=0
+>       - OIDC_SERVER=http://127.0.0.1:8090/auth/realms/mycorp
+>+       - KEYCLOAK_CONTAINER=keycloak_keycloak_1
+>     ports:
+>       - "8080:8080"
+>+     networks:
+>+       - keycloak_default
+> 
+>+ networks:
+>+   keycloak_default:
+>+     external: true
+> ```
+
 ## Support, Questions, or Feedback
 
 I'll accept pretty much everything so feel free to open a Pull-Request
