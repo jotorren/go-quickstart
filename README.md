@@ -44,6 +44,84 @@ Where:
 - **security.oidc.clientid** is the public identifier for the application
   
 ### OIDC token verifier
+Token validation algorithm implementation
+
+>`src/infrastructure/security/oidc.go`
+>```go
+>...
+> func NewTokenVerifier(cfg *config.Configuration, tr *TokenVerifierTransport) (*TokenVerifier, error) {
+> 	verifier := TokenVerifier{}
+> 
+> 	verifier.ctx = oidc.ClientContext(context.Background(), &http.Client{
+> 		Timeout:   time.Duration(5000) * time.Second,
+> 		Transport: tr,
+> 	})
+> 
+> 	provider, err := oidc.NewProvider(verifier.ctx, cfg.Security.Oidc.Configurl)
+> 	if err != nil {
+> 		return nil, err
+> 	}
+> 
+> 	verifier.instance = provider.Verifier(&oidc.Config{
+> 		ClientID: cfg.Security.Oidc.Clientid,
+> 	})
+> 
+> 	return &verifier, nil
+> }
+> 
+> func (v *TokenVerifier) Parse(rawToken string) (*ParseableToken, error) {
+> 	idToken, err := v.instance.Verify(v.ctx, rawToken)
+> 	if err != nil {
+> 		return nil, err
+> 	}
+> 
+> 	var parsedToken ParseableToken
+> 	if err := idToken.Claims(&parsedToken); err != nil {
+> 		return nil, err
+> 	}
+> 
+> 	return &parsedToken, nil
+> }
+>```
+
+> [!IMPORTANT]
+> **The token issuer claim (iss) must match the value passed as issuer (cfg.Security.Oidc.Configurl) when instantiating the verifier**
+
+The current implementation only supports tokens that comply with:
+> ```go
+> type ParseableToken struct {
+> 	Audience                  []string `json:"aud,omitempty"`
+> 	ExpiresAt                 int64    `json:"exp,omitempty"`
+> 	Id                        string   `json:"jti,omitempty"`
+> 	IssuedAt                  int64    `json:"iat,omitempty"`
+> 	Issuer                    string   `json:"iss,omitempty"`
+> 	NotBefore                 int64    `json:"nbf,omitempty"`
+> 	Subject                   string   `json:"sub,omitempty"`
+> 	Type                      string   `json:"typ,omitempty"`
+> 	AuthorizedParty           string   `json:"azp,omitempty"`
+> 	AuthContextClassReference string   `json:"acr,omitempty"`
+> 
+> 	RealmAccess struct {
+> 		Roles []string `json:"roles,omitempty"`
+> 	} `json:"realm_access,omitempty"`
+> 
+> 	ResourceAccess struct {
+> 		GolangCli struct {
+> 			Roles []string `json:"roles,omitempty"`
+> 		} `json:"golang-cli,omitempty"`
+> 		Account struct {
+> 			Roles []string `json:"roles,omitempty"`
+> 		} `json:"account,omitempty"`
+> 	} `json:"resource_access,omitempty"`
+> 
+> 	Scope             string `json:"scope,omitempty"`
+> 	Name              string `json:"name,omitempty"`
+> 	PreferredUsername string `json:"preferred_username,omitempty"`
+> 	GivenName         string `json:"given_name,omitempty"`
+> 	FamilyName        string `json:"family_name,omitempty"`
+> 	Email             string `json:"email,omitempty"`
+> }
+> ```
 
 ### HTTP middleware
 
