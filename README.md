@@ -310,8 +310,8 @@ Once logged-in:
 1. Create realm with `name` = `mycorp` (and default values)
 2. Create client with `name` = `golang-cli` (and default values)
 3. Create client roles (tab `Roles` - `Create role`): admin, player
-4. Create a user filling `username`, `email`, `email verified` (true), `first name` and `last name` 
-5. Set credentials password (`temporary` off)
+4. Create a user filling `username`, `email`, `email verified (true)`, `first name`, `last name` 
+5. Set user credentials password (`temporary off`)
 6. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
 
 ## Troubleshooting
