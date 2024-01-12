@@ -156,6 +156,21 @@ This is an opinionated *Go project template* you *can use* as a starting poi
   }
   ```
 
+  To use the request logger inside a controller:
+
+  ```shell
+  go-quickstart$ more src/infrastructure/transport/restcontroller.go
+  ```
+
+  ```go
+  func (c *RestController) Ping(w http.ResponseWriter, r *http.Request) {
+      logger := zerolog.Ctx(r.Context()).With().Str("func", REST_SERVICE_PING).Logger()
+
+      logger.Info().Msg("request ends with no error")
+      ...
+  }
+  ```
+
 ## Build & Run
 
 Get the source code:
