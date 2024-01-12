@@ -241,6 +241,10 @@ Fri, 12 Jan 2024 02:05:20 UTC INF app/src/infrastructure/transport/restcontrolle
 Fri, 12 Jan 2024 02:05:20 UTC DBG app/src/infrastructure/transport/httpadapter.go:119 > func=http.loggerMiddleware method=GET request_id=77f1fe29-410d-45bb-91f2-2f5b54f0a8a2 status_code=200 total_elapsed_ms=0.100864 url=/api/v1/ping user_agent=curl/7.74.0
 ```
 
+```diff
+Actual request no headers added: origin '[http://some.other'](http://some.other') not allowed
+```
+
 2. **Sending a preflight request**. If the preflight request is successful, the response should include the `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, and `Access-Control-Allow-Headers` headers. Otherwise, these headers shouldn't appear.
 
 ```shell
@@ -268,6 +272,10 @@ Date: Fri, 12 Jan 2024 01:59:37 GMT
 ```log
 Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 > Handler: Preflight request
 Fri, 12 Jan 2024 01:59:37 UTC DBG go/pkg/mod/github.com/rs/cors@v1.10.1/cors.go:445 >   Preflight aborted: origin 'http://some.other' not allowed
+```
+
+```diff
+Preflight aborted: origin '[http://some.other'](http://some.other') not allowed
 ```
 
 ### Docker multistage build
@@ -508,5 +516,3 @@ The source code found in the `main` branch is the baseline on which different fu
 ## Support, Questions, or Feedback
 
 I'll accept pretty much everything so feel free to open a Pull-Request
-
-> 
