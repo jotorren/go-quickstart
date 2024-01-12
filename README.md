@@ -1,6 +1,11 @@
 # A very simple Golang REST API
 
-This is an opinionated *Go project template* you *can use* as a starting point for your project. Current version includes the following *key aspects*:
+This is an opinionated *Go project template* you *can use* as a starting point for your project. 
+
+> [!IMPORTANT]
+> The source code found in the `main` branch is the baseline on which different functionalities will be added (security, `ORM`, observability...), each of them available in a specific branch of this repository.
+
+Initial version includes the following *key aspects*:
 
 - **Hexagonal architecture**
   
@@ -495,10 +500,6 @@ WORKDIR /app/src/
 RUN go env -w GOPROXY=direct
 RUN CGO_ENABLED=0 go build -o ../myapp cmd/docker/main.go
 ```
-
-## Notes
-
-The source code found in the `main` branch is the baseline on which different functionalities will be added (security, `ORM`, observability...), each of them available in a specific branch of this repository.
 
 ## Support, Questions, or Feedback
 
