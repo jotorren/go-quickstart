@@ -314,6 +314,30 @@ Once logged-in:
 5. Set user credentials password (`temporary off`)
 6. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
 
+If everything went well, you will be able to request a token:
+
+```bash
+curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=golang-cli' \
+--data-urlencode 'username=jotorren' \
+--data-urlencode 'password=password' \
+--data-urlencode 'grant_type=password'
+```
+
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyTVdOMDJKMms0bThIT2RTdGEtaVdqRlY1dWN2UFBDTnhFcmlncnlrT0V3In0.eyJleHAiOjE3MDUwNzI1MDMsImlhdCI6MTcwNTA3MjIwMywianRpIjoiYjRjOWZhYTgtYWEzYy00ODIxLWE0NTEtNWZlMDY2YmFmOWQzIiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJnb2xhbmctY2xpIiwic2Vzc2lvbl9zdGF0ZSI6ImZiYzQ5NDZiLTMzNzQtNDU2MS05N2Q1LWI5YzZkNzE0OWFkYiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbXlhcHAiXX0sInJlc291cmNlX2FjY2VzcyI6eyJnb2xhbmctY2xpIjp7InJvbGVzIjpbImFkbWluIiwicGxheWVyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvcmRpIFRvcnJlbnRlIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam90b3JyZW4iLCJnaXZlbl9uYW1lIjoiSm9yZGkiLCJmYW1pbHlfbmFtZSI6IlRvcnJlbnRlIiwiZW1haWwiOiJqb3RvcnJlbkBtYWlsLmNvbSJ9.Kd4P90GJEsoUpnfrgMPMeRsJqlA0OLzMfRopAbiLG_cCRLQH-KiOidKkGJ81RsH1ezDjQPYuD2IPdg2OEa_HLUQ28pBnUwVoz0LN_9xsybNviSGI5m_-BYstGQkmOe_Ko2I52YFsI6Q8nvtU7-XjZYmS5nSdG1a5xtE_fJa-i3HgXvX9jdBob-yJzlYTz7NtohnYl0hUNGN8zshuzS2cFJMsJPp0LOszjpWhqJ5PCYw7kYcBGKD3GuR0gDTRPDASk01_ZXTASwstoYuNQ86dJPbPp2qn4BqVu2vYDpRCbVVa3HJPSth64zdJSM2RLMtrZ1NMNg95o_dFTdrJ4Uvnbg",
+  "expires_in": 300,
+  "refresh_expires_in": 1800,
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTY3YmUzNS04ZWMxLTQ1N2QtOGY2Zi03OTc1ZTgwM2MxNWEifQ.eyJleHAiOjE3MDUwNzQwMDMsImlhdCI6MTcwNTA3MjIwMywianRpIjoiYzJmOWNhYzEtOThjOS00NmQwLTg5ZjAtMTljYTQwMGEyZWI5IiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6Imh0dHA6Ly8xMjcuMC4wLjE6ODA5MC9hdXRoL3JlYWxtcy9teWNvcnAiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiZ29sYW5nLWNsaSIsInNlc3Npb25fc3RhdGUiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIiLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIifQ.L75M3RCiedik7rsvHRBVDcKrJmuzzbuWpxThewvlKkk",
+  "token_type": "Bearer",
+  "not-before-policy": 0,
+  "session_state": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "scope": "profile email"
+}
+```
+
 ## Troubleshooting
 
 ### Keycloak port forwarding
