@@ -437,7 +437,7 @@ More concretely:
 >
 
 As you may have noticed the http://127.0.0.1:8090/auth/realms/mycorp/.well-known/openid-configuration URL is only available on the host machine but not inside a docker container. To solve the problem we can:
-1. Set the docker environment variable *OIDC_SERVER* to a publicly accessible keycloak
+1. Set the docker environment variable *OIDC_SERVER* to a publicly accessible keycloak or any other IDP
 2. Attach keycloak and application containers to the same docker network and set the docker environment variable *OIDC_SERVER* to **http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp**
 3. Attach keycloak and application containers to the same docker network and forward application's 8090 port to keycloak's 8080 (this can be easily achieved by means of the **socat** tool)
 
