@@ -1,4 +1,5 @@
 # Secure REST API in Golang with OpenID Connect
+[![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/jotorren/go-quickstart/blob/feature/security-oidc/LICENSE)
 
 This project focuses on how to secure REST APIs in Golang using the OIDC/OAuth2 standard assuming an Identity Provider (IDP) is already available.
       
