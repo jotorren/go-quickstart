@@ -365,6 +365,51 @@ curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openi
 }
 ```
 
+Decoding the token (http://jwt.io):
+```json
+{
+  "exp": 1705072503,
+  "iat": 1705072203,
+  "jti": "b4c9faa8-aa3c-4821-a451-5fe066baf9d3",
+  "iss": "http://127.0.0.1:8090/auth/realms/mycorp",
+  "aud": "account",
+  "sub": "16b1b1fa-814e-4329-a785-6eb1a1e7dcc1",
+  "typ": "Bearer",
+  "azp": "golang-cli",
+  "session_state": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "acr": "1",
+  "realm_access": {
+    "roles": [
+      "offline_access",
+      "uma_authorization",
+      "default-roles-myapp"
+    ]
+  },
+  "resource_access": {
+    "golang-cli": {
+      "roles": [
+        "admin",
+        "player"
+      ]
+    },
+    "account": {
+      "roles": [
+        "manage-account",
+        "manage-account-links",
+        "view-profile"
+      ]
+    }
+  },
+  "scope": "profile email",
+  "sid": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "email_verified": true,
+  "name": "Jordi Torrente",
+  "preferred_username": "jotorren",
+  "given_name": "Jordi",
+  "family_name": "Torrente",
+  "email": "jotorren@mail.com"
+}
+```
 ## Troubleshooting
 
 ### Keycloak port forwarding
