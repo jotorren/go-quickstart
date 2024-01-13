@@ -17,7 +17,7 @@ This project focuses on how to secure REST APIs in Golang using the OIDC/OAuth2 
 > 
 > - **rs/zerolog** logging library. **Per request contextual logging**  (all traces within the same request will share the same unique id)
 
-## Changes
+## Changes to baseline code
 
 ### Security configuration
 
