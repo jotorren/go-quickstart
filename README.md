@@ -446,7 +446,7 @@ Option 2 has an undesired drawback regarding to the token issuer claim: keycloak
 > [!CAUTION]
 > `oidc: id token issued by a different provider, expected "http://keycloak_keycloak_1:8080/auth/realms/mycorp" got "http://localhost:8090/auth/realms/mycorp"`
 
-Obviously, it is possible to add an entry to the `hosts` file on the host machine in order to map the **keycloak_keycloak_1** name (or any other value of KEYCLOAK_CONTAINER_NAME) to `localhost` and use the former name in the generate token url, but this action usually requires administration permissions that are not always available. This is the reason why the third alternative has been chosen and the following patches applied:
+Obviously, it is possible to add an entry to the `hosts` file on the host machine in order to map the **keycloak_keycloak_1** name (or any other value of KEYCLOAK_CONTAINER_NAME) to `localhost` and use the former in the generate token url, but this action usually requires administration permissions that are not always available. This is the reason why the third alternative has been chosen and the following patches applied:
 
 > `src/Dockerfile`
 > ```diff
