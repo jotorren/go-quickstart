@@ -441,7 +441,7 @@ As you may have noticed the http://127.0.0.1:8090/auth/realms/mycorp/.well-known
 2. Attach keycloak and application containers to the same docker network and set the docker environment variable *OIDC_SERVER* to **http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp**
 3. Attach keycloak and application containers to the same docker network and forward application's 8090 port to keycloak's 8080 (this can be easily achieved by means of the **socat** tool)
 
-Option 2 has an undesired drawback regarding to the token issuer claim: keycloak propagates the scheme, host and port of the url used to generate the token to its **iss** claim. For example if you call "http://localhost:8090/auth/realms/mycorp/protocol/openid-connect/token" (valid url on host machine) the token **iss** claim will be "http://localhost:8090/auth/realms/mycorp". But this value does not match "http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp" and token verification will fail:
+Option 2 has an undesired drawback regarding to the token issuer claim: keycloak propagates the scheme, host and port of the url used to generate the token to its **iss** claim. For example if you call http://localhost:8090/auth/realms/mycorp/protocol/openid-connect/token (valid url on host machine) the token **iss** claim will be http://localhost:8090/auth/realms/mycorp. But this value does not match http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp and token verification will fail:
 
 > [!CAUTION]
 > `oidc: id token issued by a different provider, expected "http://keycloak_keycloak_1:8080/auth/realms/mycorp" got "http://localhost:8090/auth/realms/mycorp"`
