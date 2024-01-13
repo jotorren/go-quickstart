@@ -21,7 +21,7 @@ This project focuses on how to secure REST APIs in Golang using the OIDC/OAuth2 
 
 ### Security configuration
 
-Edit `src/resources/application.yaml` to add the following lines:
+Added the following lines to `src/resources/application.yaml`:
 
 >```diff
 > log:
@@ -43,7 +43,7 @@ Where:
 - **security.oidc.configurl** is the token issuer realm URL and,
 - **security.oidc.clientid** is the public identifier for the application
 
-Additionally we must define the environment variable `${OIDC_SERVER}`:
+Additionally environment variable `${OIDC_SERVER}` must be defined:
 
 > `src/.env`
 > ```diff
@@ -112,9 +112,9 @@ Token validation algorithm implementation
 >```
 
 > [!IMPORTANT]
-> **The token issuer claim (iss) must match the value passed as issuer (cfg.Security.Oidc.Configurl) when instantiating the verifier**
+> **The token issuer claim (iss) must match the value passed as issuer when instantiating the verifier (cfg.Security.Oidc.Configurl)**
 
-The current implementation only supports tokens that comply with:
+Current implementation only supports tokens that comply with:
 > ```go
 > type ParseableToken struct {
 > 	Audience                  []string `json:"aud,omitempty"`
@@ -150,7 +150,7 @@ The current implementation only supports tokens that comply with:
 > }
 > ```
 
-Finally you must register the verifier constructor function in **fx**. To do so add these lines to the file `src/cmd/docker/main.go`:
+Finally the verifier constructor function must be registered in **fx**. To do so these lines must be added to the file `src/cmd/docker/main.go` (and `src/cmd/local/main.go`):
 
 > ```diff
 > func main() {
@@ -243,7 +243,7 @@ New convenience methods to easily validate http requests
 > }
 > ```
 
-Add the verifier dependency to `src/infrastructure/transport/httpadapter.go`:
+Added the verifier dependency to `src/infrastructure/transport/httpadapter.go`:
 > ```diff
 > type MuxRouterParams struct {
 > 	fx.In
