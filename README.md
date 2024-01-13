@@ -365,7 +365,7 @@ curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openi
 }
 ```
 
-Decoding the token (http://jwt.io):
+To see token details, you can decode it at http://jwt.io:
 ```json
 {
   "exp": 1705072503,
