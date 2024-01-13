@@ -331,7 +331,7 @@ c02b7ef9a48e   quay.io/keycloak/keycloak:legacy   "/opt/jboss/tools/do…"   3 s
 ca77b8562e35   postgres                           "docker-entrypoint.s…"   4 seconds ago   Up 2 seconds   5432/tcp                           keycloak_postgres_1
 ```
 
-Keycloak console UI will be accessible at http://localhost:8090/auth/ 
+Keycloak console UI will be accessible at **http://localhost:8090/auth/** (8090 host machine port is mapped to 8080 container port. See `keycloak/docker-compose.yaml`)
 
 Once logged-in:
 1. Create realm with `name` = `mycorp` (and default values)
