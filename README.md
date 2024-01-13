@@ -1,4 +1,5 @@
 # A very simple Golang REST API
+[![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/jotorren/go-quickstart/blob/main/LICENSE)
 
 This is an opinionated *Go project template* you *can use* as a starting point for your project. 
 
