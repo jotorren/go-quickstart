@@ -65,7 +65,7 @@ Initial version includes the following *key aspects*:
   >   origins: ${SERVER_ALLOWED_ORIGINS}
   > ```
   
-  Expands any environment variable references using the `os.LookupEnv` function. All characters between the opening curly brace and the first colon are used as the key, and all characters from the colon to the closing curly brace are used as the default value. If a variable isn't found, the default value is used.
+  Any environment variable reference is expanded using the `os.LookupEnv` function. All characters between the opening curly brace and the first colon are used as the key, and all characters from the colon to the closing curly brace are used as the default value. If a variable isn't found, the default value is used.
   
   $$ is expanded to a literal \$
   
@@ -205,11 +205,11 @@ To test **CORS** configuration:
 
 1. **Sending a regular request**. If the origin is allowed, the response will include the `Access-Control-Allow-Origin` header. Otherwise, that header will not appear.
 
-```shell
+```diff
 $ curl -H "Origin: http://localhost:3000" --head -X GET http://localhost:8080/api/v1/ping
 HTTP/1.1 200 OK
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: http://localhost:3000
++ Access-Control-Allow-Credentials: true
++ Access-Control-Allow-Origin: http://localhost:3000
 Content-Type: application/json
 Vary: Origin
 Date: Fri, 12 Jan 2024 02:04:29 GMT
@@ -243,12 +243,12 @@ Fri, 12 Jan 2024 02:05:20 UTC DBG app/src/infrastructure/transport/httpadapter.g
 
 2. **Sending a preflight request**. If the preflight request is successful, the response should include the `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, and `Access-Control-Allow-Headers` headers. Otherwise, these headers shouldn't appear.
 
-```shell
+```diff
 $ curl -H "Origin: http://localhost:3000" -H "Access-Control-Request-Method: GET" -X OPTIONS --head http://localhost:8080/api/v1/ping
 HTTP/1.1 204 No Content
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Methods: GET
-Access-Control-Allow-Origin: http://localhost:3000
++ Access-Control-Allow-Credentials: true
++ Access-Control-Allow-Methods: GET
++ Access-Control-Allow-Origin: http://localhost:3000
 Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
 Date: Fri, 12 Jan 2024 01:59:51 GMT
 ```
