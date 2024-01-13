@@ -336,10 +336,11 @@ Keycloak console UI will be accessible at http://localhost:8090/auth/
 Once logged-in:
 1. Create realm with `name` = `mycorp` (and default values)
 2. Create public client (`authorization field set to off`) with `name` = `golang-cli` (and default values)
-3. Create client roles (tab `Roles` - `Create role`): admin, player
-4. Create a user filling `username`, `email`, `email verified (true)`, `first name`, `last name` 
-5. Set user credentials password (`temporary off`)
-6. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
+3. Create audience mapper (tab `Client scopes` - `golang-cli-dedicated` - `Configure a new mapper` - `Audience`) with `name` = `Audience` and `Included Client Audience` = `golang-cli`  
+4. Create client roles (tab `Roles` - `Create role`): admin, player
+5. Create a user filling `username`, `email`, `email verified (true)`, `first name`, `last name` 
+6. Set user credentials password (`temporary off`)
+7. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
 
 If everything went well, you will be able to request a token:
 
@@ -354,13 +355,13 @@ curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openi
 
 ```json
 {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyTVdOMDJKMms0bThIT2RTdGEtaVdqRlY1dWN2UFBDTnhFcmlncnlrT0V3In0.eyJleHAiOjE3MDUwNzI1MDMsImlhdCI6MTcwNTA3MjIwMywianRpIjoiYjRjOWZhYTgtYWEzYy00ODIxLWE0NTEtNWZlMDY2YmFmOWQzIiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJnb2xhbmctY2xpIiwic2Vzc2lvbl9zdGF0ZSI6ImZiYzQ5NDZiLTMzNzQtNDU2MS05N2Q1LWI5YzZkNzE0OWFkYiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbXlhcHAiXX0sInJlc291cmNlX2FjY2VzcyI6eyJnb2xhbmctY2xpIjp7InJvbGVzIjpbImFkbWluIiwicGxheWVyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvcmRpIFRvcnJlbnRlIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam90b3JyZW4iLCJnaXZlbl9uYW1lIjoiSm9yZGkiLCJmYW1pbHlfbmFtZSI6IlRvcnJlbnRlIiwiZW1haWwiOiJqb3RvcnJlbkBtYWlsLmNvbSJ9.Kd4P90GJEsoUpnfrgMPMeRsJqlA0OLzMfRopAbiLG_cCRLQH-KiOidKkGJ81RsH1ezDjQPYuD2IPdg2OEa_HLUQ28pBnUwVoz0LN_9xsybNviSGI5m_-BYstGQkmOe_Ko2I52YFsI6Q8nvtU7-XjZYmS5nSdG1a5xtE_fJa-i3HgXvX9jdBob-yJzlYTz7NtohnYl0hUNGN8zshuzS2cFJMsJPp0LOszjpWhqJ5PCYw7kYcBGKD3GuR0gDTRPDASk01_ZXTASwstoYuNQ86dJPbPp2qn4BqVu2vYDpRCbVVa3HJPSth64zdJSM2RLMtrZ1NMNg95o_dFTdrJ4Uvnbg",
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyTVdOMDJKMms0bThIT2RTdGEtaVdqRlY1dWN2UFBDTnhFcmlncnlrT0V3In0.eyJleHAiOjE3MDUxNzQ0NjAsImlhdCI6MTcwNTE3NDE2MCwianRpIjoiYTMzODVlZmQtZTY3MS00MTE0LTllMGQtOTQyNDBkYWYxZDQ2IiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6WyJnb2xhbmctY2xpIiwiYWNjb3VudCJdLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJnb2xhbmctY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjljNDEzZTYxLTc1ZjktNDcwZS1iMDYxLTAyZGE3MTRhMWUwZiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbXlhcHAiXX0sInJlc291cmNlX2FjY2VzcyI6eyJnb2xhbmctY2xpIjp7InJvbGVzIjpbImFkbWluIiwicGxheWVyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI5YzQxM2U2MS03NWY5LTQ3MGUtYjA2MS0wMmRhNzE0YTFlMGYiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvcmRpIFRvcnJlbnRlIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam90b3JyZW4iLCJnaXZlbl9uYW1lIjoiSm9yZGkiLCJmYW1pbHlfbmFtZSI6IlRvcnJlbnRlIiwiZW1haWwiOiJqb3RvcnJlbkBtYWlsLmNvbSJ9.4y-Z9Cp5I64z65J_n86qCDYqSEhWH7a-wCF9vk4OosDDioI4ZrOdkX0xP-HEsGHr3yAepo2PATWfW1I8OBetDKCp0iml3LzmkjFFviYA6fphqksA4NDYamxmJ82IkZEoI5VUEGRChGfMUfPkruYPHv244cbUDos4F2eojSdUVYUZQhSUFwE7JS_ngkhPmnLbvgYdTwilKfx2uTwEgOzN_ogQzZk9WHCpMjv4wsfo111bsdPwDI4DJNoMOWr_Ws81HHSOI0Su0YAUXe0MgVjZL4Kq3O0QT-B3HYzko4IqQV3h7Tb-f_XSVFdQSJRxfjr-mbGCpWbGzg1U-gFQWOxkLw",
   "expires_in": 300,
   "refresh_expires_in": 1800,
-  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTY3YmUzNS04ZWMxLTQ1N2QtOGY2Zi03OTc1ZTgwM2MxNWEifQ.eyJleHAiOjE3MDUwNzQwMDMsImlhdCI6MTcwNTA3MjIwMywianRpIjoiYzJmOWNhYzEtOThjOS00NmQwLTg5ZjAtMTljYTQwMGEyZWI5IiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6Imh0dHA6Ly8xMjcuMC4wLjE6ODA5MC9hdXRoL3JlYWxtcy9teWNvcnAiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiZ29sYW5nLWNsaSIsInNlc3Npb25fc3RhdGUiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIiLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJmYmM0OTQ2Yi0zMzc0LTQ1NjEtOTdkNS1iOWM2ZDcxNDlhZGIifQ.L75M3RCiedik7rsvHRBVDcKrJmuzzbuWpxThewvlKkk",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0ZTY3YmUzNS04ZWMxLTQ1N2QtOGY2Zi03OTc1ZTgwM2MxNWEifQ.eyJleHAiOjE3MDUxNzU5NjAsImlhdCI6MTcwNTE3NDE2MCwianRpIjoiNTgyOTYxYWYtYTdhMC00N2EyLThlN2EtMmJiY2Y5NDJjMTg0IiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDkwL2F1dGgvcmVhbG1zL215Y29ycCIsImF1ZCI6Imh0dHA6Ly8xMjcuMC4wLjE6ODA5MC9hdXRoL3JlYWxtcy9teWNvcnAiLCJzdWIiOiIxNmIxYjFmYS04MTRlLTQzMjktYTc4NS02ZWIxYTFlN2RjYzEiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiZ29sYW5nLWNsaSIsInNlc3Npb25fc3RhdGUiOiI5YzQxM2U2MS03NWY5LTQ3MGUtYjA2MS0wMmRhNzE0YTFlMGYiLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI5YzQxM2U2MS03NWY5LTQ3MGUtYjA2MS0wMmRhNzE0YTFlMGYifQ.qa9BMupWQUTp4vX3JZ3O0QHd_a9SaoOQnMsD5DMKERM",
   "token_type": "Bearer",
   "not-before-policy": 0,
-  "session_state": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "session_state": "9c413e61-75f9-470e-b061-02da714a1e0f",
   "scope": "profile email"
 }
 ```
@@ -368,15 +369,18 @@ curl -X POST --location 'http://127.0.0.1:8090/auth/realms/mycorp/protocol/openi
 To see token details, you can decode it at http://jwt.io:
 ```json
 {
-  "exp": 1705072503,
-  "iat": 1705072203,
-  "jti": "b4c9faa8-aa3c-4821-a451-5fe066baf9d3",
+  "exp": 1705174460,
+  "iat": 1705174160,
+  "jti": "a3385efd-e671-4114-9e0d-94240daf1d46",
   "iss": "http://127.0.0.1:8090/auth/realms/mycorp",
-  "aud": "account",
+  "aud": [
+    "golang-cli",
+    "account"
+  ],
   "sub": "16b1b1fa-814e-4329-a785-6eb1a1e7dcc1",
   "typ": "Bearer",
   "azp": "golang-cli",
-  "session_state": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "session_state": "9c413e61-75f9-470e-b061-02da714a1e0f",
   "acr": "1",
   "realm_access": {
     "roles": [
@@ -401,7 +405,7 @@ To see token details, you can decode it at http://jwt.io:
     }
   },
   "scope": "profile email",
-  "sid": "fbc4946b-3374-4561-97d5-b9c6d7149adb",
+  "sid": "9c413e61-75f9-470e-b061-02da714a1e0f",
   "email_verified": true,
   "name": "Jordi Torrente",
   "preferred_username": "jotorren",
