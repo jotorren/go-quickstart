@@ -437,7 +437,7 @@ As you may have noticed the http://127.0.0.1:8090/auth/realms/mycorp/.well-known
 2. Attach keycloak and application containers to the same docker network and set the docker environment variable *OIDC_SERVER* to **http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp**
 3. Attach keycloak and application containers to the same docker network and forward application's 8090 port to keycloak's 8080 (this can be easily achieved by means of the **socat** tool)
 
-Option 2 has an undesired drawback regarding to the token issuer claim: keycloak propagates the scheme, host and port of the url used to generate the token to its iss claim. For example if you call "http://localhost:8090/auth/realms/mycorp/protocol/openid-connect/token" (valid url on host machine) the token iss claim will be "http://localhost:8090/auth/realms/mycorp". But this value does not match "http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp" and the token verifier will fail:
+Option 2 has an undesired drawback regarding to the token issuer claim: keycloak propagates the scheme, host and port of the url used to generate the token to its **iss** claim. For example if you call "http://localhost:8090/auth/realms/mycorp/protocol/openid-connect/token" (valid url on host machine) the token **iss** claim will be "http://localhost:8090/auth/realms/mycorp". But this value does not match "http://{KEYCLOAK_CONTAINER_NAME}:8080/auth/realms/mycorp" and token verification will fail:
 
 ```log
 Fri, 12 Jan 2024 16:29:45 UTC INF app/src/cmd/docker/main.go:46 > application.yaml read
@@ -453,7 +453,7 @@ Fri, 12 Jan 2024 16:29:48 UTC ERR app/src/infrastructure/transport/httpadapter.g
 > [!CAUTION]
 > `oidc: id token issued by a different provider, expected "http://keycloak_keycloak_1:8080/auth/realms/mycorp" got "http://localhost:8090/auth/realms/mycorp"`
 
-Obviously, it is possible to add an entry to the `hosts` file on the host machine to resolve the "keycloak_keycloak_1" name (or the corresponding value of KEYCLOAK_CONTAINER_NAME) and use that name in the generate token url, but this action requires administration permissions that are not always available. This is the reason why the third alternative has been chosen and the following patches applied:
+Obviously, it is possible to add an entry to the `hosts` file on the host machine to resolve the **keycloak_keycloak_1** name (or any other value of KEYCLOAK_CONTAINER_NAME) and use that name in the generate token url, but this action requires administration permissions that are not always available. This is the reason why the third alternative has been chosen and the following patches applied:
 
 > `src/Dockerfile`
 > ```diff
