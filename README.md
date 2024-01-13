@@ -150,7 +150,7 @@ Current implementation only supports tokens that comply with:
 > }
 > ```
 
-The verifier constructor function must be registered in **fx**. To do so, highlighted lines must be added to the file `src/cmd/docker/main.go` (and `src/cmd/local/main.go`):
+The verifier constructor function must be registered in **fx**. To do so, `src/cmd/docker/main.go` (and `src/cmd/local/main.go`) must be modified:
 
 > ```diff
 > func main() {
