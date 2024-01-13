@@ -21,7 +21,7 @@ This project focuses on how to secure REST APIs in Golang using the OIDC/OAuth2 
 
 ### Security configuration
 
-Added the following lines to `src/resources/application.yaml`:
+New security block in `src/resources/application.yaml`:
 
 >```diff
 > log:
@@ -71,7 +71,7 @@ Additionally environment variable `${OIDC_SERVER}` must be defined:
 > ```
 
 ### OIDC token verifier
-Token validation algorithm implementation
+New token validation algorithm implementation
 
 >`src/infrastructure/security/oidc.go`
 >```go
@@ -243,7 +243,7 @@ New convenience methods to easily validate http requests
 > }
 > ```
 
-Added the verifier dependency to `src/infrastructure/transport/httpadapter.go`:
+Verifier dependency added to `src/infrastructure/transport/httpadapter.go`:
 > ```diff
 > type MuxRouterParams struct {
 > 	fx.In
