@@ -340,7 +340,7 @@ Once logged-in:
 4. Create client roles (tab `Roles` - `Create role`): admin, player
 5. Create a user filling `username`, `email`, `email verified (true)`, `first name`, `last name` 
 6. Set user credentials password (`temporary off`)
-7. Assign to the user one or more roles from the list created in the 3rd step (tab `Role mapping` - `Assign role`)
+7. Assign to the user one or more roles from the list created in the 4th step (tab `Role mapping` - `Assign role`)
 
 If everything went well, you will be able to request a token:
 
