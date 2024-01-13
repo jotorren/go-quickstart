@@ -2,7 +2,7 @@
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/jotorren/go-quickstart/blob/feature/openapi-spec/LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-swagger/go-swagger?status.svg)](http://godoc.org/github.com/go-swagger/go-swagger)
 
-This project shows how to generate an OpenAPI 2.0 specification (fka Swagger 2.0 specification) from annotated go code.
+This project shows how to generate an **OpenAPI 2.0 specification** (fka *Swagger 2.0 specification*) from annotated go code.
       
 > [!NOTE]
 > Inherited *key aspects* from baseline code:
