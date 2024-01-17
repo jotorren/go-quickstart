@@ -14,12 +14,12 @@ Initial version includes the following *key aspects*:
   go-quickstart/
    ├──src/
    │   ├──application/
-   │   ├──cmd/             (main.go)
+   │   ├──cmd/             main applications of the project
    │   │   ├──docker/
    │   │   └──local/
    │   ├──domain/
    │   ├──infrastructure/
-   │   └──resources/       (application.yaml)
+   │   └──resources/       configuration files
    └──deploy/
   ```
 
