@@ -8,7 +8,7 @@ This is an opinionated *Go project template* you *can use* as a starting poi
 
 Initial version includes the following *key aspects*:
 
-- **Hexagonal architecture**
+- **Hexagonal architecture**. It encourages writing clean and idiomatic Go code
   
   ```textile
   go-quickstart/
