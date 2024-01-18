@@ -23,33 +23,9 @@ This project shows how to generate an **OpenAPI 2.0 specification** (fka *Swagge
 
 ## Changes to baseline code
 
-### Swagger model
-
-Annotations added
-
-> `src/infrastructure/transport/restcontroller.go`
-> ```diff
-> +// swagger:model
-> type Result struct {
-> +	// the service result object
-> +	//
-> +	// Extensions:
-> +	// ---
-> +	// x-go-type: interface{}
-> +	// ---
-> 	Value interface{} `json:"result"`
-> }
-> 
-> +// swagger:model
-> type ApiError struct {
-> +	// the error details
-> 	Code int `json:"code"`
-> +	// http error code
-> 	Message string `json:"error"`
-> }
-> ```
-
 ### API metadata
+
+New API specification
 
 > `src/infrastructure/transport/spec/swagger.go`
 > 
@@ -116,6 +92,68 @@ Annotations added
 > 	Body transport.Result
 > }
 > ```
+
+### API model
+
+Annotations added
+
+> `src/infrastructure/transport/restcontroller.go`
+> ```diff
+> +// swagger:model
+> type Result struct {
+> +	// the service result object
+> +	//
+> +	// Extensions:
+> +	// ---
+> +	// x-go-type: interface{}
+> +	// ---
+> 	Value interface{} `json:"result"`
+> }
+> 
+> +// swagger:model
+> type ApiError struct {
+> +	// the error details
+> 	Code int `json:"code"`
+> +	// http error code
+> 	Message string `json:"error"`
+> }
+> ```
+
+## Generate Swagger doc
+
+### Install go-swagger via go
+
+```shell
+$ go install github.com/go-swagger/go-swagger/cmd/swagger@v0.30.4
+go: downloading github.com/go-swagger/go-swagger v0.30.4
+go: downloading github.com/go-openapi/runtime v0.25.0
+go: downloading github.com/go-openapi/spec v0.20.8
+go: downloading github.com/go-openapi/strfmt v0.21.3
+go: downloading github.com/go-openapi/swag v0.22.3
+go: downloading github.com/go-openapi/validate v0.22.0
+go: downloading github.com/spf13/viper v1.14.0
+go: downloading github.com/go-openapi/errors v0.20.3
+go: downloading golang.org/x/tools v0.5.0
+go: downloading golang.org/x/sys v0.4.0
+go: downloading github.com/go-openapi/jsonpointer v0.19.5
+go: downloading github.com/google/uuid v1.1.2
+go: downloading github.com/spf13/cast v1.5.0
+go: downloading github.com/rogpeppe/go-internal v1.9.0
+go: downloading github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+go: downloading go.mongodb.org/mongo-driver v1.11.1
+go: downloading github.com/go-openapi/jsonreference v0.20.0
+go: downloading github.com/spf13/afero v1.9.2
+go: downloading github.com/subosito/gotenv v1.4.1
+go: downloading github.com/pelletier/go-toml/v2 v2.0.5
+go: downloading golang.org/x/text v0.6.0
+```
+
+### Generate swagger.json
+
+```shell
+quickstart$ cd src 
+quickstart/src$ swagger generate spec -o ./resources/swagger.json --scan-models
+```
 
 ## Support, Questions, or Feedback
 
