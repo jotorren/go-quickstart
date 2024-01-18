@@ -148,7 +148,7 @@ go: downloading github.com/pelletier/go-toml/v2 v2.0.5
 go: downloading golang.org/x/text v0.6.0
 ```
 
-Next, run the following commands from the project's root directory:
+Then, run the following commands from the project's root directory:
 
 ```shell
 quickstart$ cd src 
@@ -163,6 +163,8 @@ And finally:
 quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
 2024/01/18 16:58:47 serving docs at http://localhost:8081/docs
 ```
+
+From this point on, you can access the swagger UI at http://localhost:8081/docs
 
 ## Support, Questions, or Feedback
 
