@@ -148,11 +148,24 @@ go: downloading github.com/pelletier/go-toml/v2 v2.0.5
 go: downloading golang.org/x/text v0.6.0
 ```
 
-### Generate swagger.json
+### Generate swagger.json file
+
+Run the following commands from the project's root directory:
 
 ```shell
 quickstart$ cd src 
 quickstart/src$ swagger generate spec -o ./resources/swagger.json --scan-models
+quickstart/src$ ls -l ./resources/swagger.json 
+-rwxrwxrwx 1 jotorren jotorren 2298 Jan 18 16:56 ./resources/swagger.json
+```
+
+### Serve UI
+
+Run:
+
+```shell
+quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
+2024/01/18 16:58:47 serving docs at http://localhost:8081/docs
 ```
 
 ## Support, Questions, or Feedback
