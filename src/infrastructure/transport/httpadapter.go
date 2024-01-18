@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	src "tsib/quickstart"
 	"tsib/quickstart/infrastructure/config"
 	"tsib/quickstart/infrastructure/security"
 
@@ -72,6 +73,7 @@ func NewMuxRouter(p MuxRouterParams) *mux.Router {
 
 	router := mux.NewRouter()
 	router.Use(loggerMiddleware(p.Logger))
+	router.Handle("/swagger.json", byteHandler(src.SwaggerJson, "application/json"))
 
 	api := router.PathPrefix("/api/v1").Subrouter()
 	if nil != p.Verifier {
@@ -140,5 +142,12 @@ func loggerMiddleware(logger zerolog.Logger) mux.MiddlewareFunc {
 			ctx := reqlogger.WithContext(r.Context())
 			next.ServeHTTP(lrw, r.WithContext(ctx))
 		})
+	}
+}
+
+func byteHandler(b []byte, contentType string) http.HandlerFunc {
+	return func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", contentType)
+		w.Write(b)
 	}
 }

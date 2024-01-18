@@ -1,0 +1,103 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentation of Quickstart public API.",
+    "title": "Quickstart",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/v1",
+  "paths": {
+    "/ping": {
+      "get": {
+        "security": [
+          {
+            "OIDC": []
+          }
+        ],
+        "tags": [
+          "Ping"
+        ],
+        "summary": "Check whether or not the service is running.",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/pingOkResponse"
+          },
+          "401": {
+            "$ref": "#/responses/securityErrorResponse"
+          },
+          "500": {
+            "$ref": "#/responses/internalErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "the error details",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Code"
+        },
+        "error": {
+          "description": "http error code",
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "tsib/quickstart/infrastructure/transport"
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "description": "the service result object",
+          "x-go-name": "Value",
+          "x-go-type": "interface{}"
+        }
+      },
+      "x-go-package": "tsib/quickstart/infrastructure/transport"
+    }
+  },
+  "responses": {
+    "internalErrorResponse": {
+      "description": "service internal error"
+    },
+    "pingOkResponse": {
+      "description": "the service is up and running",
+      "schema": {
+        "$ref": "#/definitions/Result"
+      }
+    },
+    "securityErrorResponse": {
+      "description": "invalid security token"
+    },
+    "stringResponse": {
+      "description": "",
+      "schema": {
+        "type": "string"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OIDC": {
+      "type": "oauth2",
+      "flow": "password",
+      "tokenUrl": "http://127.0.0.1:8090/auth/realms/mycorp/protocol/openid-connect/token"
+    }
+  }
+}

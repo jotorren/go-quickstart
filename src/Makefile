@@ -10,3 +10,8 @@ test:
 	go test -v ./...
 	@echo
 
+gen-swagger:
+	swagger generate spec -o ./resources/swagger.json --scan-models
+
+swagger: gen-swagger
+	swagger serve --port=8081 -F=swagger resources/swagger.json

@@ -19,12 +19,22 @@ func SendJsonResponse(w http.ResponseWriter, statusCode int, result interface{})
 	json.NewEncoder(w).Encode(result)
 }
 
+// swagger:model
 type Result struct {
+	// the service result object
+	//
+	// Extensions:
+	// ---
+	// x-go-type: interface{}
+	// ---
 	Value interface{} `json:"result"`
 }
 
+// swagger:model
 type ApiError struct {
-	Code    int    `json:"code"`
+	// the error details
+	Code int `json:"code"`
+	// http error code
 	Message string `json:"error"`
 }
 
