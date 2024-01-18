@@ -121,7 +121,7 @@ Annotations added
 
 ## Generate Swagger doc
 
-### Install go-swagger via go
+First, install `go-swagger` via go
 
 ```shell
 $ go install github.com/go-swagger/go-swagger/cmd/swagger@v0.30.4
@@ -148,9 +148,7 @@ go: downloading github.com/pelletier/go-toml/v2 v2.0.5
 go: downloading golang.org/x/text v0.6.0
 ```
 
-### Generate swagger.json file
-
-Run the following commands from the project's root directory:
+Next, run the following commands from the project's root directory:
 
 ```shell
 quickstart$ cd src 
@@ -159,9 +157,7 @@ quickstart/src$ ls -l ./resources/swagger.json
 -rwxrwxrwx 1 jotorren jotorren 2298 Jan 18 16:56 ./resources/swagger.json
 ```
 
-### Serve UI
-
-Run:
+And finally:
 
 ```shell
 quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
