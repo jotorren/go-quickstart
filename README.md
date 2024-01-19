@@ -157,7 +157,9 @@ quickstart/src$ ls -l ./resources/swagger.json
 -rwxrwxrwx 1 jotorren jotorren 2298 Jan 18 16:56 ./resources/swagger.json
 ```
 
-And finally:
+## Swagger UI
+
+Run:
 
 ```shell
 quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
