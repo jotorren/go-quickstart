@@ -30,9 +30,9 @@ New API specification
 > `src/infrastructure/transport/spec/swagger.go`
 > 
 > ```go
-> // Package classification Quickstart
+> // Package classification 
 > //
-> // Documentation of Quickstart public API.
+> // Documentation of  public API.
 > //
 > //	 Schemes: http
 > //	 BasePath: /api/v1
@@ -57,7 +57,7 @@ New API specification
 > // swagger:meta
 > package spec
 > 
-> import "tsib/quickstart/infrastructure/transport"
+> import "tsib//infrastructure/transport"
 > 
 > // invalid security token
 > // swagger:response securityErrorResponse
@@ -151,9 +151,9 @@ go: downloading golang.org/x/text v0.6.0
 Then, run the following commands from the project's root directory:
 
 ```shell
-quickstart$ cd src 
-quickstart/src$ swagger generate spec -o ./resources/swagger.json --scan-models
-quickstart/src$ ls -l ./resources/swagger.json 
+go-quickstart$ cd src 
+go-quickstart/src$ swagger generate spec -o ./resources/swagger.json --scan-models
+go-quickstart/src$ ls -l ./resources/swagger.json 
 -rwxrwxrwx 1 jotorren jotorren 2298 Jan 18 16:56 ./resources/swagger.json
 ```
 
@@ -236,7 +236,7 @@ Create a new route
 To visualize and interact with the API’s resources:
 
 ```shell
-quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
+go-quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
 2024/01/18 16:58:47 serving docs at http://localhost:8081/docs
 ```
 
@@ -266,8 +266,8 @@ In order to allow swagger doc to be easily generated and published, add a swagge
 > ```
 
 ```shell
-quickstart$ cd src
-quickstart/src$ make swagger
+go-quickstart$ cd src
+go-quickstart/src$ make swagger
 swagger generate spec -o ./resources/swagger.json --scan-models
 swagger serve --port=8081 -F=swagger resources/swagger.json
 2024/01/19 13:59:08 serving docs at http://localhost:8081/docs
