@@ -159,7 +159,7 @@ quickstart/src$ ls -l ./resources/swagger.json
 
 ## Swagger UI
 
-Run:
+To visualize and interact with the API’s resources:
 
 ```shell
 quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
