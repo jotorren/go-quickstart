@@ -272,6 +272,11 @@ swagger generate spec -o ./resources/swagger.json --scan-models
 swagger serve --port=8081 -F=swagger resources/swagger.json
 2024/01/19 13:59:08 serving docs at http://localhost:8081/docs
 ```
+## Troubleshooting
+
+### Models do not show fields from the struct
+
+### No security tokenUrl 
 
 ## Support, Questions, or Feedback
 
