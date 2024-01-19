@@ -231,7 +231,18 @@ Create a new route
 >+ }
 > ```
 
-Add a swagger target to the Makefile that will allow swagger doc to be easily generated and published
+## Swagger UI
+
+To visualize and interact with the API’s resources:
+
+```shell
+quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
+2024/01/18 16:58:47 serving docs at http://localhost:8081/docs
+```
+
+From this point on, you can access the swagger UI at http://localhost:8081/docs
+
+In order to allow swagger doc to be easily generated and published, add a swagger target to the project's Makefile
 
 > `src/Makefile`
 > ```diff
@@ -254,16 +265,13 @@ Add a swagger target to the Makefile that will allow swagger doc to be easily ge
 >+ 	swagger serve --port=8081 -F=swagger resources/swagger.json
 > ```
 
-## Swagger UI
-
-To visualize and interact with the API’s resources:
-
 ```shell
-quickstart/src$ swagger serve --port=8081 -F=swagger resources/swagger.json
-2024/01/18 16:58:47 serving docs at http://localhost:8081/docs
+quickstart$ cd src
+quickstart/src$ make swagger
+swagger generate spec -o ./resources/swagger.json --scan-models
+swagger serve --port=8081 -F=swagger resources/swagger.json
+2024/01/19 13:59:08 serving docs at http://localhost:8081/docs
 ```
-
-From this point on, you can access the swagger UI at http://localhost:8081/docs
 
 ## Support, Questions, or Feedback
 
