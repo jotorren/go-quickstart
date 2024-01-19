@@ -276,6 +276,70 @@ swagger serve --port=8081 -F=swagger resources/swagger.json
 
 ### Models do not show fields from the struct
 
+If you install go-swagger cli using apt tool, 
+
+> `src/resources/swagger.json`
+> ```diff
+>
+>{
+>  ...
+>  
+>  "definitions": {
+>    "ApiError": {
+>-      "type": "object",
+>-      "properties": {
+>-        "code": {
+>-          "description": "the error details",
+>-          "type": "integer",
+>-          "format": "int64",
+>-          "x-go-name": "Code"
+>-        },
+>-        "error": {
+>-          "description": "http error code",
+>-          "type": "string",
+>-          "x-go-name": "Message"
+>-        }
+>-      },
+>      "x-go-package": "tsib/quickstart/infrastructure/transport"
+>    },
+>    "Result": {
+>-      "type": "object",
+>-      "properties": {
+>-        "result": {
+>-          "description": "the service result object",
+>-          "x-go-name": "Value",
+>-          "x-go-type": "interface{}"
+>-        }
+>-      },
+>      "x-go-package": "tsib/quickstart/infrastructure/transport"
+>    }
+>  },
+>  "responses": {
+>    "internalErrorResponse": {
+>      "description": "service internal error"
+>    },
+>    "pingOkResponse": {
+>      "description": "the service is up and running",
+>-      "schema": {
+>-        "$ref": "#/definitions/Result"
+>-      }
+>    },
+>    "securityErrorResponse": {
+>      "description": "invalid security token"
+>    },
+>    "stringResponse": {
+>      "description": "",
+>      "schema": {
+>-        "type": "string"
+>      }
+>    }
+>  },
+>  
+>  ...
+>}
+> ```
+
+
 ### No security tokenUrl 
 
 ## Support, Questions, or Feedback
