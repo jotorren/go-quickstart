@@ -159,7 +159,7 @@ quickstart/src$ ls -l ./resources/swagger.json
 
 ## Publish Swagger doc
 
-Embed swagger.json inside application binary
+Embed `swagger.json` inside application binary
 
 > `src/resources.go`
 > ```diff
