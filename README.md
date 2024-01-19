@@ -276,7 +276,7 @@ swagger serve --port=8081 -F=swagger resources/swagger.json
 
 ### Models do not show fields from the struct
 
-If you install go-swagger cli using apt tool, 
+If you install `go-swagger` cli using the `apt` tool and  run the `swagger generate spec` command, you will obtain an specification file like:
 
 > `src/resources/swagger.json`
 > ```diff
