@@ -157,6 +157,98 @@ quickstart/src$ ls -l ./resources/swagger.json
 -rwxrwxrwx 1 jotorren jotorren 2298 Jan 18 16:56 ./resources/swagger.json
 ```
 
+## Publish Swagger doc
+
+> `src/Makefile`
+> ```diff
+> all: test build
+> 
+> build:
+> 	@echo '**********' Building binary...
+> 	go build -o myapp cmd/local/main.go
+> 	@echo
+> 
+> test:
+> 	@echo '**********' Running tests...
+> 	go test -v ./...
+> 	@echo
+> 
+>+ gen-swagger:
+>+ 	swagger generate spec -o ./resources/swagger.json --scan-models
+>+ 
+>+ swagger: gen-swagger
+>+ 	swagger serve --port=8081 -F=swagger resources/swagger.json
+> ```
+
+> `src/resources.go`
+> ```diff
+> package src
+> 
+> import _ "embed"
+> 
+> //go:embed resources/application.yaml
+> var ApplicationYaml []byte
+> 
+>+ //go:embed resources/swagger.json
+>+ var SwaggerJson []byte
+> ```
+
+> `src/infrastructure/transport/httpadapter.go`
+> ```diff
+> package transport
+> 
+> import (
+> 	"context"
+> 	"net"
+> 	"net/http"
+> 	"time"
+> 
+>+ 	src "tsib/quickstart"
+> 	"tsib/quickstart/infrastructure/config"
+> 	"tsib/quickstart/infrastructure/security"
+> 
+> 	"github.com/google/uuid"
+> 	"github.com/gorilla/mux"
+> 	"github.com/rs/cors"
+> 	"github.com/rs/zerolog"
+> 	"go.uber.org/fx"
+> )
+> 
+> ...
+> 
+> func NewMuxRouter(p MuxRouterParams) *mux.Router {
+> 	ml, ok := p.Cfg.Log.PackagesLevel[HTTP_PACKAGE_NAME]
+> 	if ok {
+> 		p.Logger = p.Logger.Level(zerolog.Level(ml))
+> 	}
+> 
+> 	router := mux.NewRouter()
+> 	router.Use(loggerMiddleware(p.Logger))
+>+ 	router.Handle("/swagger.json", byteHandler(src.SwaggerJson, "application/json"))
+> 
+> 	api := router.PathPrefix("/api/v1").Subrouter()
+> 	if nil != p.Verifier {
+> 		api.Use(security.NewOAuth2Middleware(p.Verifier))
+> 	} else {
+> 		api.Use(security.NewOAuth2AnonymousMiddleware())
+> 	}
+> 
+> 	api.HandleFunc("/ping", p.Controller.Ping).Methods("GET")
+> 
+> 	return router
+> }
+> 
+> ...
+> 
+>+ func byteHandler(b []byte, contentType string) http.HandlerFunc {
+>+ 	return func(w http.ResponseWriter, _ *http.Request) {
+>+ 		w.Header().Set("Content-Type", contentType)
+>+ 		w.Write(b)
+>+ 	}
+>+ }
+> ```
+
+
 ## Swagger UI
 
 To visualize and interact with the API’s resources:
