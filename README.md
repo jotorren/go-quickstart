@@ -159,26 +159,7 @@ quickstart/src$ ls -l ./resources/swagger.json
 
 ## Publish Swagger doc
 
-> `src/Makefile`
-> ```diff
-> all: test build
-> 
-> build:
-> 	@echo '**********' Building binary...
-> 	go build -o myapp cmd/local/main.go
-> 	@echo
-> 
-> test:
-> 	@echo '**********' Running tests...
-> 	go test -v ./...
-> 	@echo
-> 
->+ gen-swagger:
->+ 	swagger generate spec -o ./resources/swagger.json --scan-models
->+ 
->+ swagger: gen-swagger
->+ 	swagger serve --port=8081 -F=swagger resources/swagger.json
-> ```
+Embed swagger.json inside application binary
 
 > `src/resources.go`
 > ```diff
@@ -192,6 +173,8 @@ quickstart/src$ ls -l ./resources/swagger.json
 >+ //go:embed resources/swagger.json
 >+ var SwaggerJson []byte
 > ```
+
+Create a new route
 
 > `src/infrastructure/transport/httpadapter.go`
 > ```diff
@@ -248,6 +231,28 @@ quickstart/src$ ls -l ./resources/swagger.json
 >+ }
 > ```
 
+Add a swagger target to the Makefile that will allow swagger doc to be easily generated and published
+
+> `src/Makefile`
+> ```diff
+> all: test build
+> 
+> build:
+> 	@echo '**********' Building binary...
+> 	go build -o myapp cmd/local/main.go
+> 	@echo
+> 
+> test:
+> 	@echo '**********' Running tests...
+> 	go test -v ./...
+> 	@echo
+> 
+>+ gen-swagger:
+>+ 	swagger generate spec -o ./resources/swagger.json --scan-models
+>+ 
+>+ swagger: gen-swagger
+>+ 	swagger serve --port=8081 -F=swagger resources/swagger.json
+> ```
 
 ## Swagger UI
 
